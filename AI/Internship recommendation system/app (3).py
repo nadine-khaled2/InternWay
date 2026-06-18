@@ -15,7 +15,7 @@ PREFILTER_N = 100
 RERANK_TOP_K = 25
 
 # =========================================================
-print("جاري تحميل الموديلز...")
+ 
 
 # Load ESCO
 esco_skills = pd.read_csv("skills_en.csv")
@@ -32,7 +32,7 @@ embedder = SentenceTransformer(MODEL_NAME)
 reranker = CrossEncoder(RERANKER_MODEL, max_length=512)
 tfidf = TfidfVectorizer(min_df=1, max_df=0.95)
 
-print("✅ تم تحميل الموديلز بنجاح!")
+ 
 
 def clean_skills(skills_str):
     if isinstance(skills_str, str):

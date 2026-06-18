@@ -1,0 +1,410 @@
+/* ============================================================
+   SCHEDULE PAGE
+   ============================================================ */
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+}
+
+.subtitle {
+    color: #cbd5e1;
+    margin-top: 8px;
+}
+
+.addBtn {
+    background: #2563eb;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.addBtn:hover {
+    background: #1d4ed8;
+}
+
+/* Slots Grid */
+.slotsGrid {
+    display: grid;
+    gap: 16px;
+}
+
+.emptyCard {
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.slotCard {
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: box-shadow 0.2s;
+}
+
+.slotCard:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.slotLeft {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.slotIcon {
+    padding: 12px;
+    background: #dbeafe;
+    color: #2563eb;
+    border-radius: 50%;
+    display: flex;
+}
+
+.slotDay {
+    font-weight: 700;
+    font-size: 18px;
+    color: #1e293b;
+}
+
+.slotTime {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.slotRight {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.availableBadge {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.deleteBtn {
+    padding: 8px;
+    color: #ef4444;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    transition: background 0.2s;
+}
+
+.deleteBtn:hover {
+    background: #fef2f2;
+}
+
+/* ============================================================
+   ADD SLOT MODAL
+   ============================================================ */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 16px;
+}
+
+.modal {
+    width: 100%;
+    max-width: 448px;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    background: #1e293b;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: white;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #334155;
+}
+
+.modalEyebrow {
+    font-size: 10px;
+    font-weight: 900;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.modalTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+}
+
+.closeBtn {
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    color: #94a3b8;
+    transition: background 0.2s;
+}
+
+.closeBtn:hover {
+    background: #f1f5f9;
+}
+
+.modalBody {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.fieldLabel {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 8px;
+}
+
+.fieldInput {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #475569;
+    font-size: 14px;
+    color: white;
+    background: #334155;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.fieldInput:focus {
+    border-color: #60a5fa;
+}
+
+.modalFooter {
+    padding: 0 24px 24px;
+    display: flex;
+    gap: 12px;
+}
+
+.cancelBtn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid #475569;
+    font-size: 14px;
+    font-weight: 700;
+    color: #cbd5e1;
+    background: #1e293b;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cancelBtn:hover {
+    background: #334155;
+}
+
+.saveBtn {
+    flex: 2;
+    padding: 12px;
+    border-radius: 16px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.saveBtnActive {
+    background: linear-gradient(135deg, #2563eb, #6366f1);
+    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+}
+
+.saveBtnDisabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.headerControls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.page {
+    color: white;
+}
+
+:global(body.light-mode) .page {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .title {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .subtitle {
+    color: #64748b;
+}
+
+:global(body.light-mode) .emptyCard {
+    border-color: #f1f5f9;
+    background: white;
+    color: #94a3b8;
+}
+
+:global(body.light-mode) .slotCard {
+    border-color: #f1f5f9;
+    background: white;
+}
+
+:global(body.light-mode) .modal {
+    background: white;
+    color: #1e293b;
+}
+
+:global(body.light-mode) .modalHeader {
+    border-color: #f1f5f9;
+}
+
+:global(body.light-mode) .modalTitle {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .fieldLabel {
+    color: #334155;
+}
+
+:global(body.light-mode) .fieldInput {
+    border-color: #e2e8f0;
+    color: #1e293b;
+    background: white;
+}
+
+:global(body.light-mode) .cancelBtn {
+    border-color: #e2e8f0;
+    color: #475569;
+    background: white;
+}
+
+:global(body.light-mode) .cancelBtn:hover {
+    background: #f8fafc;
+}
+
+/* ============================================================
+   DARK MODE OVERRIDES (default is dark, so fix light-only colors)
+   ============================================================ */
+
+/* slotDay uses #1e293b (dark text) — invisible on dark card */
+:global(body:not(.light-mode)) .slotDay {
+    color: #f1f5f9;
+}
+
+/* slotTime uses #64748b (medium gray) — hard to read on dark */
+:global(body:not(.light-mode)) .slotTime {
+    color: #94a3b8;
+}
+
+/* slotIcon uses #dbeafe bg (light blue) — out of place on dark */
+:global(body:not(.light-mode)) .slotIcon {
+    background: #1e40af;
+    color: #93c5fd;
+}
+
+/* availableBadge uses light green — too bright on dark */
+:global(body:not(.light-mode)) .availableBadge {
+    background: #14532d;
+    color: #4ade80;
+}
+
+/* deleteBtn hover uses light red bg — not suitable for dark */
+:global(body:not(.light-mode)) .deleteBtn:hover {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+/* closeBtn hover uses very light bg — invisible on dark */
+:global(body:not(.light-mode)) .closeBtn:hover {
+    background: rgba(148, 163, 184, 0.15);
+}
+
+/* ─── Hamburger ─────────────── */
+.hamburgerBtn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.hamburgerBtn:hover {
+    background: #252b3d;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .hamburgerBtn {
+        display: flex;
+    }
+}
+
+:global(body.light-mode) .hamburgerBtn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+

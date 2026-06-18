@@ -1,0 +1,34 @@
+.topBarControls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.iconButton {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+    background: #252b3d;
+    color: white;
+}
+
+.languageWrapper {
+    position: relative;
+}
+
+/* Light Mode Overrides */
+:global(body.light-mode) .iconButton {
+    color: #64748b;
+}
+
+:global(body.light-mode) .iconButton:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}

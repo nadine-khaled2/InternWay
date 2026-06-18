@@ -1,0 +1,362 @@
+.formContainer {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    background: var(--card-background);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border-color);
+    padding: 50px 60px;
+    margin: 40px auto;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px var(--role-button-shadow);
+    z-index: 10;
+}
+
+.glow {
+    position: fixed;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0) 70%);
+    border-radius: 50%;
+    top: -200px;
+    right: -200px;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(100px);
+}
+
+.glowSecondary {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0) 70%);
+    border-radius: 50%;
+    bottom: -100px;
+    left: -100px;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(80px);
+}
+
+.glowTertiary {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0) 70%);
+    border-radius: 50%;
+    top: 40%;
+    left: 20%;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(60px);
+}
+
+.backArrow {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    color: var(--text-heading);
+    font-size: 20px;
+    text-decoration: none;
+    /* For Next.js Link */
+    border: none;
+}
+
+.backArrow:hover {
+    background-color: var(--inner-card-background);
+}
+
+.themeToggle {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    gap: 10px;
+}
+
+.themeToggle button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-heading);
+    font-size: 18px;
+    transition: all 0.2s;
+}
+
+.themeToggle button:hover {
+    background-color: var(--inner-card-background);
+}
+
+/* Force white color in dark mode for visibility */
+:global([data-theme="dark"]) .backArrow,
+:global([data-theme="dark"]) .themeToggle button {
+    color: #ffffff !important;
+}
+
+.signupCard h2 {
+    font-size: 2rem;
+    color: var(--text-heading);
+    text-align: center;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.signupCard p {
+    color: var(--text-color);
+    margin-bottom: 35px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Changed to 2 columns for better balance */
+    gap: 20px;
+}
+
+.inputGroup {
+    margin-bottom: 0;
+    position: relative;
+    grid-column: span 1;
+}
+
+/* Make full width for odd items if needed, or specific fields */
+.fullWidth {
+    grid-column: span 2;
+}
+
+.inputGroup label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+
+.inputGroup label.required::after,
+.textareaGroup label.required::after,
+.fileUpload label.required::after {
+    content: " *";
+    color: #ef4444;
+}
+
+/* Removed optional logic as we now use required class */
+
+.inputGroup input,
+.textareaGroup textarea {
+    width: 100%;
+    padding: 12px 16px;
+    padding-left: 40px !important;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    background-color: var(--card-background);
+    color: var(--text-heading);
+}
+
+.inputGroup input:focus,
+.textareaGroup textarea:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.inputGroup .inputIcon {
+    position: absolute;
+    left: 14px;
+    top: 43px;
+    font-size: 16px;
+    color: var(--text-color);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.fileUpload {
+    grid-column: span 2;
+    margin-bottom: 0;
+}
+
+.fileUpload label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--text-heading);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.uploadArea {
+    border: 2px dashed var(--text-light);
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: var(--inner-card-background);
+}
+
+.uploadArea:hover {
+    border-color: #3b82f6;
+    background-color: var(--body-bg-start);
+}
+
+.uploadArea svg {
+    font-size: 40px;
+    color: #3b82f6;
+    margin-bottom: 15px;
+}
+
+.uploadArea p {
+    color: var(--text-heading);
+    margin: 10px 0 5px 0;
+    font-weight: 500;
+}
+
+.uploadArea span {
+    color: var(--text-color);
+    font-size: 0.85rem;
+}
+
+.uploadArea input[type="file"] {
+    display: none;
+}
+
+.buttonGroup {
+    grid-column: span 2;
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.backBtn {
+    flex: 1;
+    padding: 14px;
+    background-color: var(--inner-card-background);
+    color: var(--text-heading);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.backBtn:hover {
+    background-color: var(--card-background);
+    border-color: var(--text-color);
+}
+
+.btn {
+    flex: 2;
+    padding: 14px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.btn:hover {
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.signinText {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.signinText a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.signinText a:hover {
+    text-decoration: underline;
+}
+
+.textareaGroup {
+    grid-column: span 2;
+    margin-bottom: 0;
+}
+
+.textareaGroup label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-heading);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.textareaGroup textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+.charCount {
+    text-align: right;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    color: var(--text-color);
+}
+
+.errorText {
+    color: #e11d48 !important; /* Force red even in light mode */
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: block;
+    margin-top: 6px;
+}
+
+.helpText {
+    color: #64748b;
+    font-size: 0.75rem;
+    display: block;
+    margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+    .formContainer {
+        padding: 30px 20px;
+        margin: 20px 10px;
+    }
+
+    .form {
+        grid-template-columns: 1fr;
+    }
+
+    .inputGroup,
+    .buttonGroup,
+    .fileUpload,
+    .textareaGroup,
+    .signinText,
+    .fullWidth {
+        grid-column: span 1;
+    }
+}

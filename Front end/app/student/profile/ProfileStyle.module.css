@@ -1,0 +1,1112 @@
+/* Dashboard Page Styles - Matching Sessions Design */
+
+/* App Layout */
+.appLayout {
+    display: flex;
+    min-height: 100vh;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%);
+    border-radius: 50%;
+    top: -150px;
+    right: -100px;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+}
+
+.glowSecondary {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, rgba(168, 85, 247, 0) 70%);
+    border-radius: 50%;
+    bottom: 5%;
+    left: 10%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(70px);
+}
+
+.glowTertiary {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0) 70%);
+    border-radius: 50%;
+    top: 30%;
+    left: -100px;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: rgba(15, 23, 42, 0.8);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 100;
+}
+
+/* Logo Section */
+.logoSection {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #2d3548;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.backButton {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background-color: #252b3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: all 0.2s;
+}
+
+.backButton:hover {
+    background-color: #2d3548;
+    color: white;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.logoIcon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+
+.logoText {
+    color: white;
+    font-weight: 700;
+    font-size: 1.125rem;
+}
+
+/* Navigation */
+.nav {
+    padding: 1.5rem 0;
+    flex: 1;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    color: #9ca3af;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin: 0.25rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.navItem:hover {
+    background-color: #252b3d;
+    color: white;
+}
+
+.navItem.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.navItem.active:hover {
+    background-color: #2563eb;
+}
+
+/* Main Content */
+.mainContent {
+    margin-left: 260px;
+    flex: 1;
+    min-height: 100vh;
+    background-color: transparent;
+    padding: 2rem;
+}
+
+/* Top Bar */
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.pageHeader h1 {
+    margin: 0;
+}
+
+.pageTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.25rem;
+}
+
+.pageSubtitle {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.topBarControls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.iconButton {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+    background: #252b3d;
+    color: white;
+}
+
+.languageWrapper {
+    position: relative;
+}
+
+/* language menu moved to global */
+
+/* Stats Grid */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.statCard {
+    background: #1a1f2e;
+    border: 1px solid #2d3548;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.2s ease;
+}
+
+.statCard:hover {
+    border-color: #3b82f6;
+}
+
+.statIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: rgba(59, 130, 246, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3b82f6;
+    flex-shrink: 0;
+}
+
+.statInfo {
+    flex: 1;
+}
+
+.statLabel {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin-bottom: 0.25rem;
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+/* Sections */
+.section {
+    margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+/* Cards Grid */
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    position: relative;
+    z-index: 10;
+}
+
+.card:hover {
+    border-color: #3b82f6;
+}
+
+.cardContent {
+    margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 0.5rem 0;
+}
+
+.cardSubtitle {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin: 0 0 1rem 0;
+}
+
+.matchBadge {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 0.375rem;
+    color: #60a5fa;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Mentors Grid */
+.mentorsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.mentorCard {
+    background: #1a1f2e;
+    border: 1px solid #2d3548;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    transition: all 0.2s ease;
+}
+
+.mentorCard:hover {
+    border-color: #3b82f6;
+}
+
+.mentorAvatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.mentorInfo {
+    flex: 1;
+}
+
+.mentorName {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 0.25rem 0;
+}
+
+.mentorField {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin: 0 0 0.5rem 0;
+}
+
+.mentorRating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    color: #fbbf24;
+    font-size: 0.875rem;
+}
+
+.mentorRating span {
+    color: #9ca3af;
+}
+
+/* Buttons */
+.primaryButton {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.primaryButton:hover {
+    background: #2563eb;
+}
+
+.disabledButton {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background: transparent;
+    border: 1px solid #2d3548;
+    color: #6b7280;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.emptyMessage {
+    color: #6b7280;
+    text-align: center;
+    padding: 2rem;
+    grid-column: 1 / -1;
+}
+
+/* Light Mode */
+:global(body.light-mode) .appLayout {
+    background-color: #f8fafc;
+}
+
+:global(body.light-mode) .sidebar {
+    background-color: #ffffff;
+    border-right-color: #e2e8f0;
+}
+
+:global(body.light-mode) .logoSection {
+    border-bottom-color: #e2e8f0;
+}
+
+:global(body.light-mode) .backButton {
+    background-color: #f1f5f9;
+    color: #64748b;
+}
+
+:global(body.light-mode) .backButton:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+:global(body.light-mode) .logoText {
+    color: #000000;
+}
+
+:global(body.light-mode) .navItem {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .navItem:hover {
+    background-color: #f1f5f9;
+    color: #000000;
+}
+
+:global(body.light-mode) .navItem.active {
+    background-color: #dbeafe;
+    color: #3b82f6;
+}
+
+:global(body.light-mode) .mainContent {
+    background-color: #f8fafc;
+}
+
+:global(body.light-mode) .pageTitle {
+    color: #000000;
+}
+
+:global(body.light-mode) .pageSubtitle {
+    color: #475569;
+}
+
+:global(body.light-mode) .iconButton {
+    color: #475569;
+}
+
+:global(body.light-mode) .iconButton:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* light mode overrides removed */
+
+:global(body.light-mode) .statCard,
+:global(body.light-mode) .card,
+:global(body.light-mode) .mentorCard {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+:global(body.light-mode) .statCard:hover,
+:global(body.light-mode) .card:hover,
+:global(body.light-mode) .mentorCard:hover {
+    border-color: #3b82f6;
+}
+
+:global(body.light-mode) .statLabel,
+:global(body.light-mode) .cardSubtitle,
+:global(body.light-mode) .mentorField {
+    color: #475569;
+}
+
+:global(body.light-mode) .statValue,
+:global(body.light-mode) .cardTitle,
+:global(body.light-mode) .mentorName,
+:global(body.light-mode) .sectionTitle {
+    color: #000000;
+}
+
+:global(body.light-mode) .emptyMessage {
+    color: #94a3b8;
+}
+
+:global(body.light-mode) .disabledButton {
+    border-color: #e2e8f0;
+}
+
+/* RTL Support */
+[dir="rtl"] .sidebar {
+    right: 0;
+    left: auto;
+    border-right: none;
+    border-left: 1px solid #2d3548;
+}
+
+[dir="rtl"] .mainContent {
+    margin-left: 0;
+    margin-right: 260px;
+}
+
+/* rtl handled by global */
+
+/* Profile Specific Styles */
+.profileSection {
+    padding: 2rem;
+}
+
+.avatarSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #2d3548;
+}
+
+:global(body.light-mode) .avatarSection {
+    border-bottom-color: #e2e8f0;
+}
+
+.profileName {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    margin-top: 1rem;
+}
+
+:global(body.light-mode) .profileName {
+    color: #000000;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroupFull {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #9ca3af;
+}
+
+:global(body.light-mode) .label {
+    color: #1e293b;
+}
+
+.input,
+.textarea {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 0.9375rem;
+    transition: all 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+:global(body.light-mode) .input,
+:global(body.light-mode) .textarea {
+    background: #ffffff;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.skillsSection {
+    margin-bottom: 2rem;
+}
+
+.skillsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.skillBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 1.5rem;
+    color: #60a5fa;
+    font-size: 0.875rem;
+}
+
+:global(body.light-mode) .skillBadge {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.removeSkillBtn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: currentColor;
+    transition: all 0.2s;
+}
+
+.removeSkillBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.addSkillContainer {
+    display: flex;
+    gap: 1rem;
+}
+
+.addSkillContainer .input {
+    flex: 1;
+}
+
+.addSkillContainer .primaryButton {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.saveButton {
+    width: 100%;
+    padding: 0.875rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.saveButton:hover {
+    background: #2563eb;
+}
+
+/* New Section Styles */
+.sectionContainer {
+    margin-bottom: 2.5rem;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #2d3548;
+}
+
+.sectionHeader h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+}
+
+:global(body.light-mode) .sectionHeader {
+    border-bottom-color: #e2e8f0;
+}
+
+:global(body.light-mode) .sectionHeader h3 {
+    color: #000000;
+}
+
+.sectionHeader svg {
+    color: white;
+}
+
+:global(body.light-mode) .sectionHeader svg {
+    color: #475569;
+}
+
+.twoColumnGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.uploadSectionTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 1.5rem 0;
+}
+
+:global(body.light-mode) .uploadSectionTitle {
+    color: #000000;
+}
+
+.uploadArea {
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.uploadArea:hover {
+    border-color: #3b82f6;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+:global(body.light-mode) .uploadArea {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+:global(body.light-mode) .uploadArea:hover {
+    background: #f1f5f9;
+    border-color: #3b82f6;
+}
+
+.uploadIcon {
+    color: #9ca3af;
+    margin-bottom: 1rem;
+}
+
+:global(body.light-mode) .uploadIcon {
+    color: #475569;
+}
+
+.uploadText {
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    margin: 0 0 0.5rem 0;
+}
+
+:global(body.light-mode) .uploadText {
+    color: #1e293b;
+}
+
+.uploadSubtext {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin: 0;
+}
+
+:global(body.light-mode) .uploadSubtext {
+    color: #475569;
+}
+
+.addButton {
+    padding: 0.75rem 1.5rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.addButton:hover {
+    background: #2563eb;
+}
+
+.hiddenFileInput {
+    display: none;
+}
+
+.editBarTop {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+}
+
+.editProfileBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 36px;
+    padding: 0 1.125rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.editProfileBtn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.editActionBtns {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cancelEditBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 36px;
+    padding: 0 1.125rem;
+    background: transparent;
+    color: #9ca3af;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelEditBtn:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.saveEditBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 36px;
+    padding: 0 1.125rem;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.saveEditBtn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.gradientSaveButton {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+}
+
+.gradientSaveButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Internships Specific */
+.internshipsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.internshipCard {
+    background: #1a1f2e;
+    border: 1px solid #2d3548;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: all 0.2s;
+}
+
+.internshipCard:hover {
+    border-color: #3b82f6;
+}
+
+:global(body.light-mode) .internshipCard {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+.internshipTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 0.25rem 0;
+}
+
+:global(body.light-mode) .internshipTitle {
+    color: #000000;
+}
+
+.companyName {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin: 0 0 1rem 0;
+}
+
+:global(body.light-mode) .companyName {
+    color: #475569;
+}
+
+.metaRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+:global(body.light-mode) .metaItem {
+    color: #475569;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .mainContent {
+        margin-left: 220px;
+    }
+
+    [dir="rtl"] .mainContent {
+        margin-left: 0;
+        margin-right: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .mainContent {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    [dir="rtl"] .mainContent {
+        margin-right: 0;
+    }
+
+    .topBar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .topBarControls {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .pageTitle {
+        font-size: 1.5rem;
+    }
+
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .cardsGrid,
+    .mentorsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .twoColumnGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .uploadArea {
+        padding: 2rem 1rem;
+    }
+}
+
+/* ─── Hamburger ─────────────── */
+.hamburgerBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.hamburgerBtn:hover {
+  background: #252b3d;
+  color: white;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+.overlayVisible {
+  display: block;
+}
+
+.sidebarOpen {
+  display: flex !important;
+}
+
+@media (max-width: 768px) {
+  .hamburgerBtn {
+    display: flex;
+  }
+}
+
+:global(body.light-mode) .hamburgerBtn:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}

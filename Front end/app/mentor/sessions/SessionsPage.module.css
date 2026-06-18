@@ -1,0 +1,1330 @@
+/* ============================================================
+   SESSIONS PAGE
+   ============================================================ */
+
+.page {
+    min-height: 100vh;
+    background: transparent;
+    color: white;
+}
+
+.container {
+    max-width: 896px;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+.pageTitle {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.pageSubtitle {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin-top: 8px;
+}
+
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 96px 0;
+    gap: 16px;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.errorState {
+    text-align: center;
+    font-size: 14px;
+    color: #ef4444;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.sessionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Filter Bar */
+.filterBar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filterPill {
+    padding: 8px 18px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+}
+
+.filterPill:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.filterPillActive {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+
+.emptyState {
+    text-align: center;
+    color: #94a3b8;
+    padding: 80px 0;
+    font-size: 14px;
+}
+
+/* ============================================================
+   SESSION CARD
+   ============================================================ */
+
+.sessionCard {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    padding: 20px 24px;
+    transition: box-shadow 0.2s;
+}
+
+.sessionCard:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.sessionCardTop {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.sessionAvatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.sessionInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.sessionTitle {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+.sessionStudent {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-top: 2px;
+    margin-bottom: 6px;
+}
+
+.sessionMeta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.sessionMetaItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Status Badge */
+.badge {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badgeConfirmed {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.badgePending {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fde68a;
+}
+
+.badgeDeclined {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.badgeCompleted {
+    background: #f8fafc;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.badgeCancelled {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.badgeExpired {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+
+/* Card Actions */
+.cardActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.btnStartMeeting {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #2563eb, #6366f1);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btnStartMeeting:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.btnStartMeeting:disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.7;
+    background-image: none;
+}
+
+.btnConfirm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+    background: #2563EB;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnConfirm:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.btnConfirm:disabled {
+    opacity: 0.6;
+}
+
+.btnDecline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ef4444;
+    background: white;
+    border: 1px solid #fecaca;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnDecline:hover:not(:disabled) {
+    background: #fef2f2;
+}
+
+.btnDecline:disabled {
+    opacity: 0.6;
+}
+
+.btnViewDetails {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #475569;
+    background: white;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnViewDetails:hover {
+    background: #f8fafc;
+}
+
+.btnReschedule {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    background: white;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btnReschedule:hover {
+    background: #f8fafc;
+}
+
+/* ============================================================
+   VIEW DETAILS MODAL
+   ============================================================ */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 16px;
+}
+
+.detailsModal {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 512px;
+    max-height: 90vh;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.modalTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.closeBtn {
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    color: #94a3b8;
+    display: flex;
+    transition: background 0.2s;
+}
+
+.closeBtn:hover {
+    background: #f1f5f9;
+}
+
+.modalBody {
+    overflow-y: auto;
+    flex: 1;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Student Info Card */
+.studentInfoCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+}
+
+.studentInfoLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.studentAvatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #2563EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.studentName {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+.studentUniversity {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.studentMajor {
+    font-size: 12px;
+    color: #3b82f6;
+    font-weight: 500;
+}
+
+.viewProfileBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #3b82f6;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.viewProfileBtn:hover {
+    color: #1d4ed8;
+}
+
+/* Session Info Grid */
+.infoSectionLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.infoCell {
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+}
+
+.infoCellLabel {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.infoCellValue {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.infoCellMeta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* Notes */
+.notesBox {
+    padding: 16px;
+    background: #eff6ff;
+    border-radius: 12px;
+    border: 1px solid #dbeafe;
+    display: flex;
+    gap: 8px;
+}
+
+.notesText {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.6;
+}
+
+/* Meeting Link */
+.meetingLink {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.meetingLink:hover {
+    background: #dbeafe;
+}
+
+.meetingLinkIcon {
+    width: 36px;
+    height: 36px;
+    background: #3b82f6;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.meetingLinkBody {
+    flex: 1;
+    min-width: 0;
+}
+
+.meetingLinkTitle {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1d4ed8;
+}
+
+.meetingLinkUrl {
+    font-size: 12px;
+    color: #93c5fd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meetingLinkArrow {
+    margin-left: auto;
+    color: #93c5fd;
+    flex-shrink: 0;
+}
+
+/* Modal Footer */
+.detailsModalFooter {
+    padding: 16px 24px;
+    border-top: 1px solid #f1f5f9;
+    background: #f8fafc;
+}
+
+.closeFullBtn {
+    width: 100%;
+    padding: 12px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.closeFullBtn:hover {
+    background: #2563eb;
+}
+
+/* ============================================================
+   RESCHEDULE MODAL
+   ============================================================ */
+
+.rescheduleModal {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 448px;
+    height: 580px;
+    max-height: 88vh;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.rescheduleHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.rescheduleEyebrow {
+    font-size: 10px;
+    font-weight: 900;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 2px 0;
+}
+
+.rescheduleTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.rescheduleStudent {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3b82f6;
+    margin: 2px 0 0 0;
+    line-height: 1.2;
+}
+
+.currentSlotBar {
+    padding: 12px 24px 0;
+}
+
+.currentSlotBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.currentSlotLabel {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.currentSlotValue {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.slotSelectHint {
+    font-size: 12px;
+    color: #64748b;
+    margin: 8px 0;
+    font-weight: 500;
+}
+
+.slotsScrollArea {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 200px;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.slotItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.slotItemDefault {
+    border: 1px solid #f1f5f9;
+    background: #fafafa;
+}
+
+.slotItemSelected {
+    border: 2px solid #2563EB;
+    background: rgba(37, 99, 235, 0.2);
+}
+
+.slotItemLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.slotIconBox {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.slotIconBoxDefault {
+    background: white;
+    border: 1px solid #e2e8f0;
+}
+
+.slotIconBoxSelected {
+    background: rgba(37, 99, 235, 0.3);
+}
+
+.slotDate {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.slotTimeMeta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.slotSelectBadge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 12px;
+    transition: all 0.15s;
+}
+
+.slotSelectBadgeDefault {
+    border: 1px solid #93c5fd;
+    color: #3b82f6;
+    background: white;
+}
+
+.slotSelectBadgeSelected {
+    background: #3b82f6;
+    color: white;
+}
+
+.selectedSummary {
+    margin: 0 24px 12px;
+    padding: 12px 16px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 16px;
+    display: flex;
+    gap: 20px;
+}
+
+.summaryLabel {
+    font-size: 10px;
+    font-weight: 900;
+    color: #93c5fd;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.summaryValue {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e40af;
+}
+
+.summaryDivider {
+    width: 1px;
+    background: #dbeafe;
+}
+
+.rescheduleFooter {
+    padding: 0 24px 24px;
+    display: flex;
+    gap: 12px;
+}
+
+.rescheduleCancelBtn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+    background: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.rescheduleCancelBtn:hover {
+    background: #f8fafc;
+}
+
+.rescheduleConfirmBtn {
+    flex: 2;
+    padding: 12px;
+    border-radius: 16px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+/* ============================================================
+   DARK/LIGHT THEME SUPPORT OVERRIDES
+   ============================================================ */
+
+/* Default Dark Theme adjustments */
+.sessionCard {
+    background: rgba(15, 23, 42, 0.4);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.sessionCard:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(15, 23, 42, 0.6);
+}
+
+.sessionTitle {
+    color: white;
+}
+
+.btnViewDetails,
+.btnReschedule,
+.rescheduleCancelBtn {
+    background: #252b3d;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+.btnViewDetails:hover,
+.btnReschedule:hover,
+.rescheduleCancelBtn:hover {
+    background: #1e293b;
+    color: white;
+}
+
+.detailsModal,
+.rescheduleModal {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: white;
+}
+
+.modalHeader,
+.rescheduleHeader,
+.detailsModalFooter {
+    background: #252b3d;
+    border-color: #334155;
+}
+
+.modalTitle,
+.rescheduleTitle,
+.studentName,
+.infoCellValue,
+.slotDate,
+.notesText,
+.infoCellMeta {
+    color: white;
+}
+
+.studentUniversity,
+.meetingLinkUrl,
+.meetingLinkArrow,
+.slotSelectHint,
+.slotTimeMeta,
+.currentSlotLabel,
+.infoCellLabel,
+.infoSectionLabel {
+    color: #cbd5e1;
+}
+
+.confirmBtnDisabled {
+    background: #334155;
+    color: #64748b;
+}
+
+.studentInfoCard,
+.infoCell {
+    background: #334155;
+    border-color: #475569;
+}
+
+.notesBox,
+.meetingLink {
+    background: #252b3d;
+    border-color: #3b4f7c;
+}
+
+.meetingLinkTitle {
+    color: #60a5fa;
+}
+
+.meetingLinkUrl,
+.meetingLinkArrow {
+    color: #94a3b8;
+}
+
+.currentSlotBox {
+    background: #334155;
+    border-color: #475569;
+}
+
+.currentSlotValue {
+    color: white;
+}
+
+.slotItemDefault {
+    border-color: #334155;
+    background: #252b3d;
+}
+
+.slotIconBoxDefault {
+    background: #334155;
+    border-color: #475569;
+}
+
+.slotSelectBadgeDefault {
+    border-color: #475569;
+    color: #94a3b8;
+    background: transparent;
+}
+
+.selectedSummary {
+    background: #252b3d;
+    border-color: #3b4f7c;
+}
+
+.summaryValue {
+    color: #60a5fa;
+}
+
+.closeBtn:hover {
+    background: #334155;
+}
+
+/* Light Mode Overrides */
+:global(body.light-mode) .pageTitle {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .pageSubtitle {
+    color: #64748b;
+}
+
+:global(body.light-mode) .filterPill {
+    background: white;
+    border-color: #e2e8f0;
+    color: #475569;
+}
+
+:global(body.light-mode) .filterPill:hover {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+:global(body.light-mode) .filterPillActive {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+:global(body.light-mode) .sessionCard {
+    background: white;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+:global(body.light-mode) .sessionCard:hover {
+    background: white;
+    border-color: #cbd5e1;
+}
+
+:global(body.light-mode) .sessionTitle {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .btnViewDetails,
+:global(body.light-mode) .btnReschedule,
+:global(body.light-mode) .rescheduleCancelBtn {
+    background: white;
+    border-color: #e2e8f0;
+    color: #475569;
+}
+
+:global(body.light-mode) .btnViewDetails:hover,
+:global(body.light-mode) .btnReschedule:hover,
+:global(body.light-mode) .rescheduleCancelBtn:hover {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+:global(body.light-mode) .detailsModal,
+:global(body.light-mode) .rescheduleModal {
+    background: white;
+    border: none;
+    color: #1e293b;
+}
+
+:global(body.light-mode) .modalHeader,
+:global(body.light-mode) .rescheduleHeader,
+:global(body.light-mode) .detailsModalFooter {
+    background: #f8fafc;
+    border-color: #f1f5f9;
+}
+
+:global(body.light-mode) .modalTitle,
+:global(body.light-mode) .rescheduleTitle,
+:global(body.light-mode) .studentName,
+:global(body.light-mode) .infoCellValue,
+:global(body.light-mode) .slotDate,
+:global(body.light-mode) .notesText {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .studentInfoCard,
+:global(body.light-mode) .infoCell {
+    background: #f8fafc;
+    border-color: #f1f5f9;
+}
+
+:global(body.light-mode) .notesBox,
+:global(body.light-mode) .meetingLink {
+    background: #eff6ff;
+    border-color: #dbeafe;
+}
+
+:global(body.light-mode) .meetingLinkTitle {
+    color: #1d4ed8;
+}
+
+:global(body.light-mode) .meetingLinkUrl,
+:global(body.light-mode) .meetingLinkArrow {
+    color: #2563eb;
+}
+
+:global(body.light-mode) .infoSectionLabel,
+:global(body.light-mode) .infoCellLabel,
+:global(body.light-mode) .studentUniversity,
+:global(body.light-mode) .currentSlotLabel,
+:global(body.light-mode) .slotSelectHint,
+:global(body.light-mode) .slotTimeMeta {
+    color: #475569;
+}
+
+:global(body.light-mode) .currentSlotBox {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+:global(body.light-mode) .currentSlotValue {
+    color: #475569;
+}
+
+:global(body.light-mode) .slotItemDefault {
+    border-color: #f1f5f9;
+    background: #fafafa;
+}
+
+:global(body.light-mode) .slotIconBoxDefault {
+    background: white;
+    border-color: #e2e8f0;
+}
+
+:global(body.light-mode) .slotItemSelected {
+    background: #eff6ff;
+}
+
+:global(body.light-mode) .slotIconBoxSelected {
+    background: #dbeafe;
+}
+
+:global(body.light-mode) .slotSelectBadgeDefault {
+    border-color: #93c5fd;
+    color: #3b82f6;
+    background: white;
+}
+
+:global(body.light-mode) .selectedSummary {
+    background: #eff6ff;
+    border-color: #dbeafe;
+}
+
+:global(body.light-mode) .summaryValue {
+    color: #1e40af;
+}
+
+:global(body.light-mode) .closeBtn:hover {
+    background: #f1f5f9;
+}
+
+:global(body.light-mode) .closeFullBtn {
+    background: #1e293b;
+}
+
+:global(body.light-mode) .closeFullBtn:hover {
+    background: #0f172a;
+}
+
+:global(body.light-mode) .page {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .confirmBtnDisabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+}
+
+.flexGrow {
+    flex: 1;
+    min-width: 0;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #f1f5f9;
+    margin: 0;
+}
+
+:global(body.light-mode) .divider {
+    border-top-color: #f1f5f9;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+}
+
+.confirmBtnDefault {
+    background: linear-gradient(135deg, #2563eb, #6366f1);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.confirmBtnDisabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.confirmBtnDone {
+    background: #22c55e;
+    color: white;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* ─── Hamburger ─────────────── */
+.hamburgerBtn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.hamburgerBtn:hover {
+    background: #252b3d;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .hamburgerBtn {
+        display: flex;
+    }
+}
+
+:global(body.light-mode) .hamburgerBtn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* ============================================================
+   STUDENT PROFILE ACCORDION STYLES
+   ============================================================ */
+
+.profileAccordion {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.35s ease;
+    margin-bottom: 0;
+}
+
+.profileAccordionExpanded {
+    max-height: 600px;
+    margin-bottom: 16px;
+}
+
+.profileAccordionInner {
+    background: #252b3d;
+    border: 1px solid #3b4f7c;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.profileLoadingState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 13px;
+    padding: 24px 0;
+}
+
+.profileErrorState {
+    text-align: center;
+    color: #ef4444;
+    font-size: 13px;
+    padding: 12px;
+}
+
+.profileDetailsContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profileGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 480px) {
+    .profileGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.profileCell {
+    padding: 12px;
+    background: #334155;
+    border: 1px solid #475569;
+    border-radius: 12px;
+}
+
+.skillsSection {
+    border-top: 1px solid #3b4f7c;
+    padding-top: 12px;
+}
+
+.skillsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skillBadge {
+    padding: 6px 12px;
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Light Mode Overrides for Profile Accordion */
+:global(body.light-mode) .profileAccordionInner {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+:global(body.light-mode) .profileLoadingState {
+    color: #64748b;
+}
+
+:global(body.light-mode) .profileCell {
+    background: white;
+    border-color: #e2e8f0;
+}
+
+:global(body.light-mode) .skillsSection {
+    border-color: #e2e8f0;
+}
+
+:global(body.light-mode) .skillBadge {
+    background: #eff6ff;
+    color: #2563eb;
+}

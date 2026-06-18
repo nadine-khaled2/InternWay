@@ -1,0 +1,850 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+  /* Brand Colors */
+  --color-brand-primary: #2563eb;
+  --color-brand-secondary: #6366f1;
+
+  /* Backgrounds */
+  --color-background-main: #ffffff;
+  --color-background-body: linear-gradient(135deg, #e8f0ff 0%, #f0e8ff 100%);
+
+  /* Text */
+  --color-text-header: #0f172a;
+  --color-text-body: #64748b;
+  --color-text-white: #ffffff;
+
+  /* Borders & Shadows */
+  --color-border-light: #e2e8f0;
+  --color-shadow-light: rgba(0, 0, 0, 0.05);
+  --color-shadow-card: rgba(0, 0, 0, 0.08);
+
+  /* InternWay Color Palette (Shared) */
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-color-graiant: #9333ea;
+
+  /* Body background gradients */
+  --body-bg-start: #e8f0ff;
+  --body-bg-end: #f0e8ff;
+
+  /* Card / Container backgrounds */
+  --card-background: #ffffff;
+  --inner-card-background: #f8fafc;
+
+  /* Text colors */
+  --text-heading: #0f172a;
+  --text-color: #64748b;
+  --text-light: #94a3b8;
+
+  /* Borders */
+  --border-color: #e2e8f0;
+  --role-button-shadow: rgba(0, 0, 0, 0.08);
+
+  /* Icon Gradients */
+  --icon-gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --icon-gradient-purple: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+  --icon-gradient-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+[data-theme="dark"] {
+  --color-background-main: #0f172a;
+  --color-background-body: #0f172a;
+  --color-text-header: #ffffff;
+  --color-text-body: #94a3b8;
+  --color-border-light: rgba(255, 255, 255, 0.05);
+  --color-shadow-light: rgba(0, 0, 0, 0.5);
+  --color-shadow-card: rgba(0, 0, 0, 0.5);
+  --color-brand-primary: #3b82f6;
+
+  /* InternWay Color Palette (Dark Mode Overrides) */
+  --body-bg-start: #0f172a;
+  --body-bg-end: #020617;
+
+  --card-background: rgba(15, 23, 42, 0.6);
+  --inner-card-background: rgba(255, 255, 255, 0.025);
+
+  --text-heading: #ffffff;
+  --text-color: #94a3b8;
+  --text-light: #64748b;
+
+  --border-color: rgba(255, 255, 255, 0.05);
+  --role-button-shadow: rgba(0, 0, 0, 0.4);
+}
+
+/* Global Dark Mode Glows */
+.global-glow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  background: #0f172a;
+  display: none;
+}
+
+[data-theme="dark"] .global-glow-container {
+  display: block;
+}
+
+.glow-1 {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0) 70%);
+  border-radius: 50%;
+  top: -200px;
+  right: -200px;
+  filter: blur(100px);
+}
+
+.glow-2 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0) 70%);
+  border-radius: 50%;
+  bottom: 5%;
+  left: 10%;
+  filter: blur(80px);
+}
+
+.glow-3 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, rgba(59, 130, 246, 0) 70%);
+  border-radius: 50%;
+  top: 30%;
+  left: -100px;
+  filter: blur(90px);
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.6) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Common UI Utilities */
+.icon-toggle-btn {
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: inherit !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.25rem !important;
+  border-radius: 4px !important;
+  transition: background 0.2s !important;
+}
+
+.icon-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="light"] .icon-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.rotate-180 {
+  transform: rotate(180deg) !important;
+}
+
+.z-index-1 {
+  z-index: 1 !important;
+}
+
+.z-index-10 {
+  z-index: 10 !important;
+}
+
+.text-opacity-80 {
+  opacity: 0.8 !important;
+}
+
+.empty-check-space {
+  width: 16px !important;
+  display: inline-block !important;
+}
+
+.max-w-28 {
+  max-width: 28rem !important;
+}
+
+.text-body-secondary {
+  color: var(--color-text-body) !important;
+}
+
+.d-inline {
+  display: inline !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.me-10 {
+  margin-right: 10px !important;
+}
+
+.ms-10 {
+  margin-left: 10px !important;
+}
+
+.text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.text-red-500 {
+  color: #ef4444 !important;
+}
+
+.bg-blue-500 {
+  background-color: #3b82f6 !important;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem !important;
+}
+
+.flex-center {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.p-2 {
+  padding: 0.5rem !important;
+}
+
+.px-4 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.py-2 {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Page Specific Glows (to be used inside relative containers) */
+.page-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+}
+
+.page-glow-secondary {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
+.page-glow-tertiary {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, rgba(59, 130, 246, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(50px);
+}
+
+.login-glow {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0) 70%);
+  border-radius: 50%;
+  top: -200px;
+  right: -200px;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(100px);
+}
+
+.login-glow-secondary {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0) 70%);
+  border-radius: 50%;
+  bottom: -100px;
+  left: -100px;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+}
+
+.login-glow-tertiary {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0) 70%);
+  border-radius: 50%;
+  top: 40%;
+  left: 20%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
+[data-theme="light"] .page-glow,
+[data-theme="light"] .page-glow-secondary,
+[data-theme="light"] .page-glow-tertiary {
+  display: none;
+}
+
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background: var(--color-background-body);
+  /* Use gradient from variable */
+  background-color: var(--color-background-main);
+  /* Fallback */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  font-weight: 300;
+  /* Thinner font weight as requested */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ... Scrollbar Styles ... */
+/* Custom Scrollbar - Dark Mode */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #0c1120 0%, #1e293b 50%, #0c1120 100%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #8b5cf6 100%);
+  border-radius: 10px;
+  border: 2px solid #0c1120;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7c8ff0 0%, #8b5cf6 50%, #a855f7 100%);
+  border: 2px solid #1e293b;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #3b82f6 0%, #667eea 50%, #764ba2 100%);
+}
+
+/* Firefox Scrollbar - Dark Mode */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #667eea #1e293b;
+}
+
+/* Custom Scrollbar - Light Mode */
+body.light-mode ::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
+}
+
+body.light-mode ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #8b5cf6 100%);
+  border: 2px solid #ffffff;
+}
+
+body.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7c8ff0 0%, #8b5cf6 50%, #a855f7 100%);
+  border: 2px solid #e9ecef;
+}
+
+body.light-mode ::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #3b82f6 0%, #667eea 50%, #764ba2 100%);
+}
+
+/* Firefox Scrollbar - Light Mode */
+body.light-mode * {
+  scrollbar-color: #667eea #e9ecef;
+}
+
+/* ... Legacy Login Styles ... */
+.left-panel {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  position: relative;
+  overflow: hidden;
+  width: 45%;
+  min-height: 100vh;
+}
+
+[data-theme="dark"] .left-panel {
+  background: rgba(15, 23, 42, 0.4);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .left-panel::before {
+  opacity: 0.1;
+}
+
+.left-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 50%, rgba(240, 147, 251, 0.3) 100%);
+  filter: blur(60px);
+  opacity: 0.8;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.logo-circle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: float 2.5s ease-in-out infinite;
+}
+
+.login-panel {
+  width: 55%;
+  min-height: 100vh;
+  background-color: var(--color-background-main);
+}
+
+.role-btn {
+  padding: 2rem 1rem;
+  border-radius: 1rem;
+  border: 2px solid #e2e8f0;
+  background-color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+[data-theme="dark"] .role-btn {
+  border-color: #374151;
+  background-color: #1e293b;
+}
+
+.role-btn:hover {
+  border-color: #4b5563;
+  transform: translateY(-2px);
+}
+
+.role-btn.selected {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+[data-theme="dark"] .role-btn.selected {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.role-icon-circle {
+  width: 80px;
+  height: 80px;
+  margin: 0;
+  font-size: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.role-icon-circle.student {
+  background: linear-gradient(180deg, #93c5fd 0%, #3b82f6 100%);
+}
+
+.role-icon-circle.mentor {
+  background: linear-gradient(180deg, #a855f7 0%, #ec4899 100%);
+}
+
+.role-icon-circle.company {
+  background: #10b981;
+}
+
+.role-icon-circle.unselected {
+  background: #374151;
+}
+
+.form-control {
+  background-color: #1e293b;
+  border: 1px solid #374151;
+  color: white;
+}
+
+.form-control::placeholder {
+  color: #6b7280;
+}
+
+.form-control:focus {
+  background-color: #1e293b;
+  border-color: #3b82f6;
+  color: white;
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+.form-check-input {
+  background-color: #1e293b;
+  border-color: #374151;
+}
+
+.form-check-input:checked {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Language Menu - Standard Global Component */
+.language-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 6px;
+  min-width: 160px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 1000;
+  box-shadow: none !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.language-menu.show {
+  display: flex !important;
+}
+
+.language-option {
+  padding: 10px 14px;
+  color: var(--text-heading) !important;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.language-option:hover {
+  background: var(--inner-card-background) !important;
+  transform: translateX(4px);
+}
+
+[dir="rtl"] .language-option:hover {
+  transform: translateX(-4px);
+}
+
+.language-option.active {
+  background: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Light Mode Overrides for Legacy Logic */
+body.light-mode {
+  background-color: #ffffff !important;
+}
+
+body.light-mode .left-panel {
+  background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 50%, #fce7f3 100%);
+}
+
+body.light-mode .left-panel::before {
+  background: linear-gradient(135deg, rgba(224, 231, 255, 0.5) 0%, rgba(221, 214, 254, 0.5) 50%, rgba(252, 231, 243, 0.5) 100%);
+}
+
+body.light-mode .logo-circle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+body.light-mode .login-panel {
+  background-color: #ffffff !important;
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode label {
+  color: #1e293b !important;
+}
+
+body.light-mode p,
+body.light-mode span {
+  color: #64748b;
+}
+
+body.light-mode .form-control {
+  background-color: #ffffff !important;
+  border-color: #dee2e6 !important;
+  color: #1e293b !important;
+}
+
+body.light-mode .form-control:focus {
+  background-color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+
+body.light-mode .form-check-input {
+  background-color: #ffffff !important;
+  border-color: #dee2e6 !important;
+}
+
+body.light-mode .form-check-input:checked {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+}
+
+body.light-mode .form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+}
+
+body.light-mode .role-btn {
+  background-color: #ffffff !important;
+  border-color: #dee2e6 !important;
+}
+
+body.light-mode .role-btn.selected {
+  border-color: #3b82f6 !important;
+  background-color: #eff6ff !important;
+}
+
+body.light-mode .role-icon-circle.unselected {
+  background: #e5e7eb;
+}
+
+/* ... language menu overrides removed and unified ... */
+
+body.light-mode .theme-lang-controls button {
+  color: #1e293b !important;
+}
+
+body.light-mode .theme-lang-controls button:hover {
+  color: #3b82f6 !important;
+}
+
+.welcome-subtitle {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.light-mode .welcome-subtitle {
+  color: #475569 !important;
+}
+
+body.light-mode .left-panel a,
+body.light-mode .left-panel button {
+  color: #1e293b !important;
+}
+
+
+/* RTL Support */
+[dir="rtl"] .left-panel {
+  direction: rtl;
+}
+
+[dir="rtl"] .language-menu {
+  right: auto;
+  left: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .left-panel {
+    display: none !important;
+  }
+
+  .login-panel {
+    width: 100% !important;
+    padding: 1.5rem !important;
+  }
+
+  .logo-circle {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+
+  .role-icon-circle {
+    width: 50px;
+    height: 50px;
+  }
+
+  .role-btn {
+    padding: 0.75rem !important;
+  }
+
+  .form-control {
+    padding: 0.875rem !important;
+    font-size: 16px !important;
+  }
+
+  .login-btn {
+    padding: 0.875rem !important;
+  }
+
+  .theme-lang-controls {
+    position: relative !important;
+    width: 100% !important;
+    justify-content: flex-end !important;
+    margin: 0 0 1rem 0 !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+  }
+
+  [dir="rtl"] .theme-lang-controls {
+    justify-content: flex-start !important;
+  }
+
+  .language-menu {
+    right: 0;
+    left: auto;
+  }
+
+  [dir="rtl"] .language-menu {
+    left: 0;
+    right: auto;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .left-panel {
+    width: 35% !important;
+  }
+
+  .login-panel {
+    width: 65% !important;
+  }
+
+  .logo-circle {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-panel {
+    padding: 1rem !important;
+  }
+
+  .role-btn {
+    padding: 0.5rem !important;
+  }
+
+  .role-icon-circle {
+    width: 45px;
+    height: 45px;
+  }
+
+  .form-control {
+    padding: 0.75rem !important;
+  }
+}
+
+.role-text-selected {
+  color: #ffffff !important;
+}
+body.light-mode .role-text-selected {
+  color: #1e293b !important;
+}

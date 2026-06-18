@@ -1,0 +1,730 @@
+/* ============================================================
+   MENTEES PAGE
+   ============================================================ */
+
+.page {
+    min-height: 100vh;
+    background: transparent;
+    padding: 32px;
+    color: white;
+}
+
+.container {
+    max-width: 1152px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    margin-bottom: 24px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.subtitle {
+    color: #cbd5e1;
+    margin-top: 8px;
+}
+
+/* Search */
+.searchBar {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 0 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    height: 56px;
+}
+
+.searchIcon {
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #475569;
+    font-size: 14px;
+}
+
+.searchInput::placeholder {
+    color: #94a3b8;
+}
+
+/* Cards Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+/* Mentee Card */
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+}
+
+.cardProfileRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.cardAvatar {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.cardName {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.cardUniversity {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3b82f6;
+    margin: 2px 0;
+}
+
+.cardMajor {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* Contact Info */
+.contactInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.contactRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.contactRowBold {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Card Footer */
+.cardFooter {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sessionsLabel {
+    font-size: 10px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+}
+
+.sessionsCount {
+    font-size: 32px;
+    font-weight: 900;
+    color: #1e293b;
+    line-height: 1;
+}
+
+.scheduleBtn {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+.scheduleBtn:hover {
+    opacity: 0.9;
+}
+
+/* ============================================================
+   SCHEDULE SESSION MODAL
+   ============================================================ */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 16px;
+}
+
+.rescheduleModal {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 448px;
+    height: 580px;
+    max-height: 88vh;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.rescheduleHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.rescheduleEyebrow {
+    font-size: 10px;
+    font-weight: 900;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 2px 0;
+}
+
+.rescheduleTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.rescheduleStudent {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3b82f6;
+    margin: 2px 0 0 0;
+    line-height: 1.2;
+}
+
+.currentSlotBar {
+    padding: 12px 24px 0;
+}
+
+.currentSlotBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.currentSlotLabel {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.currentSlotValue {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.slotSelectHint {
+    font-size: 12px;
+    color: #64748b;
+    margin: 8px 0;
+    font-weight: 500;
+}
+
+.slotsScrollArea {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 200px;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.slotItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.slotItemDefault {
+    border: 1px solid #f1f5f9;
+    background: #fafafa;
+}
+
+.slotItemSelected {
+    border: 2px solid #2563EB;
+    background: rgba(37, 99, 235, 0.2);
+}
+
+.slotItemLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.slotIconBox {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.slotIconBoxDefault {
+    background: white;
+    border: 1px solid #e2e8f0;
+}
+
+.slotIconBoxSelected {
+    background: rgba(37, 99, 235, 0.3);
+}
+
+.slotDate {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.slotTimeMeta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.slotSelectBadge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 12px;
+    transition: all 0.15s;
+}
+
+.slotSelectBadgeDefault {
+    border: 1px solid #93c5fd;
+    color: #3b82f6;
+    background: white;
+}
+
+.slotSelectBadgeSelected {
+    background: #3b82f6;
+    color: white;
+}
+
+.selectedSummary {
+    margin: 0 24px 12px;
+    padding: 12px 16px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 16px;
+    display: flex;
+    gap: 20px;
+}
+
+.summaryLabel {
+    font-size: 10px;
+    font-weight: 900;
+    color: #93c5fd;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.summaryValue {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e40af;
+}
+
+.summaryDivider {
+    width: 1px;
+    background: #dbeafe;
+}
+
+.rescheduleFooter {
+    padding: 0 24px 24px;
+    display: flex;
+    gap: 12px;
+}
+
+.rescheduleCancelBtn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+    background: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.rescheduleCancelBtn:hover {
+    background: #f8fafc;
+}
+
+.rescheduleConfirmBtn {
+    flex: 2;
+    padding: 12px;
+    border-radius: 16px;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.confirmBtnDefault {
+    background: linear-gradient(135deg, #2563eb, #6366f1);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+}
+
+.confirmBtnDisabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.confirmBtnDone {
+    background: #22c55e;
+    color: white;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.closeBtn {
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    color: #94a3b8;
+    display: flex;
+    transition: background 0.2s;
+}
+
+.closeBtn:hover {
+    background: #f1f5f9;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #f1f5f9;
+    margin: 0;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+}
+
+.slotLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ============================================================
+   DARK/LIGHT THEME SUPPORT OVERRIDES
+   ============================================================ */
+
+/* Default Dark Theme adjustments */
+.title {
+    color: white;
+}
+.subtitle {
+    color: #cbd5e1;
+}
+.searchBar {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.searchInput {
+    color: white;
+}
+.card {
+    background: rgba(15, 23, 42, 0.4);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+}
+.card:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(15, 23, 42, 0.6);
+}
+.cardName, .contactRowBold, .sessionsCount {
+    color: white;
+}
+.contactRow {
+    color: #cbd5e1;
+}
+.cardFooter {
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+.rescheduleCancelBtn {
+    background: #252b3d;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+.rescheduleCancelBtn:hover {
+    background: #1e293b;
+    color: white;
+}
+
+.rescheduleModal {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: white;
+}
+
+.rescheduleHeader {
+    background: #252b3d;
+    border-color: #334155;
+}
+
+.rescheduleTitle,
+.slotDate,
+.currentSlotValue {
+    color: white;
+}
+
+.slotSelectHint,
+.slotTimeMeta,
+.currentSlotLabel {
+    color: #cbd5e1;
+}
+
+.currentSlotBox {
+    background: #334155;
+    border-color: #475569;
+}
+
+.slotItemDefault {
+    border-color: #334155;
+    background: #252b3d;
+}
+
+.slotIconBoxDefault {
+    background: #334155;
+    border-color: #475569;
+}
+
+.slotSelectBadgeDefault {
+    border-color: #475569;
+    color: #94a3b8;
+    background: transparent;
+}
+
+.selectedSummary {
+    background: #252b3d;
+    border-color: #3b4f7c;
+}
+
+.summaryValue {
+    color: #60a5fa;
+}
+
+.closeBtn:hover {
+    background: #334155;
+}
+
+/* Light Mode Overrides */
+:global(body.light-mode) .title {
+    color: #1e293b;
+}
+:global(body.light-mode) .subtitle {
+    color: #64748b;
+}
+:global(body.light-mode) .searchBar {
+    background: white;
+    border-color: #e2e8f0;
+}
+:global(body.light-mode) .searchInput {
+    color: #475569;
+}
+:global(body.light-mode) .card {
+    background: white;
+    border-color: #f1f5f9;
+    color: #1e293b;
+}
+:global(body.light-mode) .card:hover {
+    border-color: #cbd5e1;
+    background: white;
+}
+:global(body.light-mode) .cardName,
+:global(body.light-mode) .contactRowBold,
+:global(body.light-mode) .sessionsCount {
+    color: #1e293b;
+}
+:global(body.light-mode) .contactRow {
+    color: #64748b;
+}
+:global(body.light-mode) .cardFooter {
+    border-top-color: #f1f5f9;
+}
+:global(body.light-mode) .rescheduleModal {
+    background: white;
+    border: none;
+    color: #1e293b;
+}
+:global(body.light-mode) .rescheduleHeader {
+    background: #f8fafc;
+    border-color: #f1f5f9;
+}
+:global(body.light-mode) .rescheduleTitle,
+:global(body.light-mode) .slotDate {
+    color: #1e293b;
+}
+:global(body.light-mode) .closeBtn:hover {
+    background: #f1f5f9;
+}
+:global(body.light-mode) .slotItemDefault {
+    border-color: #f1f5f9;
+    background: #fafafa;
+}
+:global(body.light-mode) .slotIconBoxDefault {
+    background: white;
+    border-color: #e2e8f0;
+}
+:global(body.light-mode) .slotSelectBadgeDefault {
+    border-color: #93c5fd;
+    color: #3b82f6;
+    background: white;
+}
+:global(body.light-mode) .slotItemSelected {
+    background: #eff6ff;
+    border-color: #2563EB;
+}
+:global(body.light-mode) .slotIconBoxSelected {
+    background: #dbeafe;
+}
+:global(body.light-mode) .selectedSummary {
+    background: #eff6ff;
+    border-color: #dbeafe;
+}
+:global(body.light-mode) .summaryValue {
+    color: #1e40af;
+}
+:global(body.light-mode) .rescheduleCancelBtn {
+    background: white;
+    border-color: #e2e8f0;
+    color: #475569;
+}
+:global(body.light-mode) .rescheduleCancelBtn:hover {
+    background: #f8fafc;
+    color: #1e293b;
+}
+:global(body.light-mode) .page {
+    color: #1e293b;
+}
+:global(body.light-mode) .confirmBtnDisabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+}
+
+/* ─── Hamburger ─────────────── */
+.hamburgerBtn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.hamburgerBtn:hover {
+    background: #252b3d;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .hamburgerBtn {
+        display: flex;
+    }
+}
+
+:global(body.light-mode) .hamburgerBtn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+

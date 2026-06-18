@@ -1,0 +1,426 @@
+/* ViewdetailsStyles.module.css */
+
+
+/* ── Detail page scroll area ─────────────────────────────────────────────── */
+.detailScroll {
+  /* Default: Dark Mode Theme Variables */
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --card-bg: rgba(30, 41, 59, 0.4);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-shadow: none;
+  --skill-bg: rgba(59, 130, 246, 0.1);
+  --skill-color: #60a5fa;
+  --skill-border: rgba(59, 130, 246, 0.3);
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 28px 32px 60px;
+  animation: fadeSlideUp 0.35s ease both;
+}
+
+:global(body.light-mode) .detailScroll {
+  /* Light Mode Theme Variables */
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --skill-bg: rgba(59, 130, 246, 0.08);
+  --skill-color: #2563eb;
+  --skill-border: rgba(59, 130, 246, 0.2);
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hero card ────────────────────────────────────────────────────────────── */
+.heroCard {
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+.heroAccentBar {
+  height: 5px;
+  /* background-color set inline via accentColor */
+}
+
+.heroBody {
+  padding: 24px 28px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* ── Company avatar ───────────────────────────────────────────────────────── */
+.companyAvatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  /* background-color set inline via accentColor */
+}
+
+.companyAvatarSm {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+}
+
+/* ── Hero text block ──────────────────────────────────────────────────────── */
+.heroInfo {
+  flex: 1;
+  min-width: 200px;
+}
+
+.heroTitle {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.heroCompany {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ── Quick-info badges ────────────────────────────────────────────────────── */
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  /* color + background set inline per-badge */
+}
+
+
+/* ── Two-column layout ────────────────────────────────────────────────────── */
+.twoCol {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 304px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── Generic content card (left column) ──────────────────────────────────── */
+.card {
+  border-radius: 16px;
+  padding: 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 2rem;
+}
+
+.cardTitle {
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cardBody {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ── Requirements list ────────────────────────────────────────────────────── */
+.requirementList {
+  list-style: none;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.requirementItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.requirementIcon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  /* color set inline via accentColor */
+}
+
+/* ── Skills ───────────────────────────────────────────────────────────────── */
+.skillsRow {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.skillBadge {
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 17px;
+  font-weight: 500;
+  background: var(--skill-bg);
+  color: var(--skill-color);
+  border: 1px solid var(--skill-border);
+}
+
+/* ── Sidebar cards ────────────────────────────────────────────────────────── */
+.sideCard {
+  border-radius: 16px;
+  padding: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.sideCardTitle {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── Apply button ─────────────────────────────────────────────────────────── */
+.applyBtn {
+  width: 100%;
+  padding: 11px 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.15s, transform 0.1s;
+  /* background set inline via accentColor */
+}
+
+.applyBtn:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.applyBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Applied state ────────────────────────────────────────────────────────── */
+.appliedBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.appliedTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+  color: #10B981;
+}
+
+.appliedSub {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ── Applicants note ──────────────────────────────────────────────────────── */
+.applicantsNote {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ── Closed notice ────────────────────────────────────────────────────────── */
+.closedNotice {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ── Company block inside sidebar ────────────────────────────────────────── */
+.companyRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.companyRowName {
+  margin: 0;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.companyRowIndustry {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* ── Info rows (company details) ─────────────────────────────────────────── */
+.infoRows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.infoRowLink {
+  font-size: 13px;
+  text-decoration: none;
+  /* color set inline via accentColor */
+}
+
+.infoRowLink:hover {
+  text-decoration: underline;
+}
+
+/* ── Detail rows (quick-details card) ────────────────────────────────────── */
+.detailRows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.detailRowLabel {
+  color: var(--text-secondary);
+}
+
+.detailRowValue {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ── Divider ──────────────────────────────────────────────────────────────── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--card-border);
+  margin: 0;
+}
+
+/* ── Loading / Error states ───────────────────────────────────────────────── */
+.stateCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 60vh;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.errorText {
+  color: #ef4444;
+  margin: 0;
+  font-size: 14px;
+}
+
+.retryBtn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+
+  .detailScroll {
+    padding: 20px 16px 60px;
+  }
+
+  .heroBody {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 18px;
+  }
+
+  .companyAvatar {
+    width: 52px;
+    height: 52px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+}

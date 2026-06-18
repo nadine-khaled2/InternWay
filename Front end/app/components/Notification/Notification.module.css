@@ -1,0 +1,268 @@
+.notificationWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.bellButton {
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bellButton:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: #ef4444;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 2px solid #1e293b;
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 360px;
+    background: rgba(30, 41, 59, 0.95);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    overflow: hidden;
+    animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rtl.dropdown {
+    right: auto;
+    left: 0;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.markAll {
+    background: transparent;
+    border: none;
+    color: #3b82f6;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.markAll:hover {
+    text-decoration: underline;
+}
+
+.markAll:disabled {
+    color: #64748b;
+    opacity: 0.5;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+:global(body.light-mode) .markAll:disabled {
+    color: #94a3b8;
+}
+
+.list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.item {
+    padding: 1rem 1.25rem;
+    display: flex;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.unread {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.iconBox {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.infoIcon { color: #3b82f6; background: rgba(59, 130, 246, 0.1); border-radius: 50%; padding: 4px; }
+.successIcon { color: #10b981; background: rgba(16, 185, 129, 0.1); border-radius: 50%; padding: 4px; }
+.warningIcon { color: #f59e0b; background: rgba(245, 158, 11, 0.1); border-radius: 50%; padding: 4px; }
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.25rem;
+    gap: 0.5rem;
+}
+
+.itemTitle {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+}
+
+.time {
+    font-size: 0.75rem;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.message {
+    font-size: 0.8125rem;
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.unreadDot {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    width: 8px;
+    height: 8px;
+    background: #3b82f6;
+    border-radius: 50%;
+}
+
+.rtl .unreadDot {
+    right: auto;
+    left: 1.25rem;
+}
+
+.empty {
+    padding: 3rem 1.25rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+.viewAll {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
+
+.viewAll:hover {
+    color: white;
+}
+
+/* Light Mode Styles */
+:global(body.light-mode) .dropdown {
+    background: white;
+    border-color: #e2e8f0;
+}
+
+:global(body.light-mode) .title {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .item:hover {
+    background: #f8fafc;
+}
+
+:global(body.light-mode) .unread {
+    background: #eff6ff;
+}
+
+:global(body.light-mode) .itemTitle {
+    color: #1e293b;
+}
+
+:global(body.light-mode) .message {
+    color: #64748b;
+}
+
+:global(body.light-mode) .bellButton {
+    color: #64748b;
+}
+
+:global(body.light-mode) .bellButton:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+:global(body.light-mode) .badge {
+    border-color: white;
+}

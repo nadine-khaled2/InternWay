@@ -1,0 +1,48 @@
+﻿using InternWay.Models.mentor_schema;
+using InternWay.Models.student_schema;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace InternWay.Models.PaymentSystem
+{
+    public enum PaymentStatus
+    {
+        Pending,
+        Paid,
+        Failed,
+        Refunded
+    }
+    public enum RefundStatus
+    {
+        None,
+        Partial,
+        Full
+    }
+    [Table("Payments", Schema = "PaymentSystem")]
+    public class Payment
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public int SessionId { get; set; }
+
+        public Mentorship_Session Session { get; set; }
+
+        public int StudentId { get; set; }
+
+        public Student Student { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public string? TransactionId { get; set; }
+
+        public PaymentStatus Status { get; set; }
+
+        public RefundStatus RefundStatus  { get; set; }
+
+        public decimal RefundedAmount { get; set; } = 0;
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    }
+}

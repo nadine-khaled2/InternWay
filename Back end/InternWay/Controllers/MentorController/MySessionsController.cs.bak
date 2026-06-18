@@ -1,0 +1,216 @@
+using InternWay.DTOs;
+using InternWay.DTOs.MentorModels;
+using InternWay.Models.mentor_schema;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+
+namespace InternWay.Controllers.MentorController
+{
+    [Route("Mentor/[controller]")]
+    [ApiController]
+    [Authorize(Roles = "mentor")]
+    public class MySessionsController : ControllerBase
+    {
+        private readonly InternShipWayDB _context;
+        public MySessionsController(InternShipWayDB context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllSessions()
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (UserId == null)
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            if (!int.TryParse(UserId, out var id))
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            var mentor = await _context.Mentors.FirstOrDefaultAsync(m => m.user_id == id);
+            if (mentor == null) return NotFound(new { message = "Mentor not found" });
+            int mentorId = mentor.Mentor_Id;
+
+            var sessions = await _context.mentorship_Sessions
+                .Where(s => s.mentor_availability.mentor_id == mentorId)
+                .Include(s => s.student).ThenInclude(st => st.User)
+                .Include(s => s.mentor_availability)
+                .OrderBy(s => s.mentor_availability.date).ThenBy(s => s.mentor_availability.start_time)
+                .ToListAsync();
+
+            var today = DateOnly.FromDateTime(DateTime.Now);
+
+            var result = sessions.Select(s => new MentorSessionListDto
+            {
+                SessionId = s.session_id,
+                MenteeId = s.student_id,
+                MenteeName = s.student.User.Full_Name,
+                Topic = s.topic.ToString(),
+                Status = s.status_session.ToString(),
+                FormattedDate = s.mentor_availability.date == today ? $"Today, {s.mentor_availability.start_time:hh:mm tt}" : $"{s.mentor_availability.date:MMM d}, {s.mentor_availability.start_time:hh:mm tt}",
+                Duration = GetDuration(s.mentor_availability.Duration),
+                IsUpcoming = s.mentor_availability.date >= today && s.status_session != Mentorship_Session.Status_Session.Completed
+            }).ToList();
+
+            return Ok(result);
+        }
+
+        private string GetDuration(TimeSpan span)
+        {
+            if (span.TotalMinutes < 60) return $"{span.TotalMinutes} min";
+            if (span.TotalMinutes == 60) return "1 hour";
+            return $"{Math.Round(span.TotalHours, 1)} hours";
+        }
+
+        [HttpGet("rescheduleSession")]
+        public async Task<IActionResult> GetAvailableSlotsForReschedule()
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (UserId == null)
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            if (!int.TryParse(UserId, out var id))
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            var mentor = await _context.Mentors.FirstOrDefaultAsync(m => m.user_id == id);
+            if (mentor == null) return NotFound(new { message = "Mentor not found" });
+            int mentorId = mentor.Mentor_Id;
+
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var slots = await _context.Mentor_Availabilities
+                .Where(a => a.mentor_id == mentorId && !a.is_booked && a.date >= today)
+                .Select(a => new MentorSlotDto
+                {
+                    SlotId = a.Slot_Id,
+                    Date = a.date.ToString("yyyy-MM-dd"), // Keep as is if frontend uses date separated
+                    StartTime = a.date.ToDateTime(a.start_time).ToString("O"), // ISO format
+                    EndTime = a.date.ToDateTime(a.start_time.Add(a.Duration)).ToString("O")     // ISO format
+                }).ToListAsync();
+
+            return Ok(slots);
+        }
+
+        [HttpPut("rescheduleSession/{sessionId}/{slotId}")]
+        public async Task<IActionResult> selectedOtherSession(int sessionId, int slotId)
+        {
+            var session = await _context.mentorship_Sessions
+                .Include(s => s.mentor_availability)
+                .Include(s => s.student)
+                .FirstOrDefaultAsync(s => s.session_id == sessionId);
+
+            if (session == null) return NotFound("Session not found");
+
+            var newSlot = await _context.Mentor_Availabilities.FirstOrDefaultAsync(a => a.Slot_Id == slotId);
+            if (newSlot == null || newSlot.is_booked) return BadRequest("Selected slot is invalid or already booked");
+
+            // Unbook old slot
+            session.mentor_availability.is_booked = false;
+
+            // Book new slot
+            session.slot_id = slotId;
+            newSlot.is_booked = true;
+            session.status_session = Mentorship_Session.Status_Session.Pending; // Needs re-acceptance maybe? Or keep it accepted
+
+            await _context.SaveChangesAsync();
+
+            if (session.student != null)
+            {
+                // await _notificationService.CreateAndSendNotificationAsync(...
+            }
+
+            return Ok(new { message = "Session rescheduled successfully" });
+        }
+
+        [HttpGet("joinMeeting/{sessionId}")]
+        public async Task<IActionResult> StartMeeting(int sessionId)
+        {
+            var session = await _context.mentorship_Sessions
+                .Include(s => s.mentor_availability)
+                .FirstOrDefaultAsync(s => s.session_id == sessionId);
+
+            if (session == null) return NotFound("Session not found");
+            if (string.IsNullOrEmpty(session.mentor_availability.session_link))
+                return BadRequest("No meeting link provided for this slot");
+
+            return Ok(new { link = session.mentor_availability.session_link });
+        }
+
+        [HttpDelete("cancelSession/{sessionId}")]
+        public async Task<IActionResult> CancelSession(int sessionId)
+        {
+            var session = await _context.mentorship_Sessions
+                .Include(s => s.mentor_availability)
+                .Include(s => s.student)
+                .FirstOrDefaultAsync(s => s.session_id == sessionId);
+
+            if (session == null) return NotFound("Session not found");
+
+            // Validate that we cannot cancel an Accepted or Completed session
+            if (session.status_session == Mentorship_Session.Status_Session.Confirmed ||
+                session.status_session == Mentorship_Session.Status_Session.Completed)
+            {
+                return BadRequest(new { message = "You cannot cancel an accepted or completed session. Please reschedule instead if an emergency occurred." });
+            }
+
+            session.mentor_availability.is_booked = false;
+            session.status_session = Mentorship_Session.Status_Session.Cancelled;
+
+            await _context.SaveChangesAsync();
+
+            if (session.student != null)
+            {
+                // await _notificationService.CreateAndSendNotificationAsync(...
+            }
+
+            return Ok(new { message = "Session cancelled successfully" });
+        }
+
+        [HttpPut("confirmsession/{sessionId}")]
+        public async Task<IActionResult> AcceptSession(int sessionId)
+        {
+            var session = await _context.mentorship_Sessions.FindAsync(sessionId);
+            if (session == null) return NotFound("Session not found");
+
+            session.status_session = Mentorship_Session.Status_Session.Confirmed;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Session confirmed successfully" });
+        }
+
+        [HttpGet("viewdetails/{sessionId}")]
+        public async Task<IActionResult> DetailsOfSession(int sessionId)
+        {
+            var session = await _context.mentorship_Sessions
+                .Include(s => s.student).ThenInclude(st => st.User)
+                .Include(s => s.mentor_availability)
+                .FirstOrDefaultAsync(s => s.session_id == sessionId);
+
+            if (session == null) return NotFound("Session not found");
+
+            var result = new MentorSessionDetailsDto
+            {
+                SessionId = session.session_id,
+                Student = new StudentObjectDto
+                {
+                    Id = session.student_id,
+                    Name = session.student.User.Full_Name,
+                    University = session.student.University,
+                    Major = session.student.Major
+                },
+                Topic = session.topic.ToString(),
+                Status = session.status_session.ToString(),
+                StartTime = session.mentor_availability.date.ToDateTime(session.mentor_availability.start_time).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                EndTime = session.mentor_availability.date.ToDateTime(session.mentor_availability.start_time.Add(session.mentor_availability.Duration)).ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                Duration = GetDuration(session.mentor_availability.Duration),
+                PlatformLink = session.status_session == Mentorship_Session.Status_Session.Confirmed ? session.mentor_availability.session_link : null,
+                Notes = null // Populate this if you add a notes field to the session model later
+            };
+
+            return Ok(result);
+        }
+    }
+}

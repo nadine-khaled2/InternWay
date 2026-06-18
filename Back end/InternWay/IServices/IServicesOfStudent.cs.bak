@@ -1,0 +1,29 @@
+using InternWay.DTOs;
+using InternWay.DTOs.AIModels;
+using InternWay.DTOs.StudentModels;
+using Microsoft.AspNetCore.Http;
+
+namespace InternWay.IServices
+{
+    public abstract class IServicesOfStudent
+    {
+        public abstract Task<(List<RecommendedInternshipDto>?, int StatusCode, string  message)> GetRecommendedInternships(int UserId);
+        public abstract Task<(List<MentorDataForStudentDto>?, int StatusCode, string message)> GetRecommendedMentors(int UserId);
+        public abstract Task<(DashboardOfStudentDto?,int StatusCode,string message)> GetDashboardOfStudent(int UserId);
+        public abstract Task<(List<MentorDataForStudentDto>?, int StatusCode, string message)> GetAllMentorsForStudent();
+        //public abstract Task<(MentorDetailsDataForStudentDto, int StatusCode, string message)> GetDetailsOfMentorForStudent(int mentorId);
+        public abstract Task<( List<SessionDto>?, int StatusCode, string message)> GetAllSortedBookedSessionByStudent(int UserId );
+        public abstract Task<(List<AvailableSessionsofMentorDto>?, int StatusCode, string message) > GetAllAvailabilitiesOfMentor(int mentorId);
+        public abstract Task<(List<SessionTopicDto>?, int StatusCode, string message)> GetAllSessionTopic();
+        public abstract Task<(string? link, int statusCode, string message)> JoinMeeting(int sessionId , int userId);
+        public abstract Task CompleteSession(int sessionId);
+        public abstract  Task<(int statusCode , string message)> addSession(int slotId, int UserId , int TopicId);
+        public abstract Task<(int statusCode, SessionActionResponseDto)> deleteSession(int sessionId , int UserId);
+        public abstract Task<(int statusCode, SessionActionResponseDto)> rescheduleSession(int sessionId, int slotId ,int TopicId , int UserId);
+        public abstract Task<(UpdateResponse, ProfileStudentDto?)> UpdateProfile(RequestUpdateStudentDto editedStudent, int UserId);
+        public abstract Task<(ProfileStudentDto?, int StatusCode)> GetDataBystudent(int studentId);
+        public abstract Task<(int statusCode, string message)> AddReviewForMentorByStudent(ReviewRequestDto review, int UserId);
+        public abstract Task<(List<MatchScoreForStudent>?, int statusCode, string message)> GetMatchScoreOfStudent(int UserId);
+    }
+}
+

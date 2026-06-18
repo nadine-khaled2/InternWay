@@ -1,0 +1,123 @@
+using InternWay.IServices;
+using InternWay.Services.CompanyServices;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+namespace InternWay.Controllers.CompanyController
+{
+    [Route("company/[controller]")]
+    [ApiController]
+    [Authorize(Roles = "company")]
+    public class ApplicantsController : ControllerBase
+    {
+        private readonly IServicesOfCompany servicesOfCompany;
+
+        public ApplicantsController(IServicesOfCompany servicesOfCompany)
+        {
+            this.servicesOfCompany = servicesOfCompany;
+        }
+      
+        [HttpGet]
+        public async Task< IActionResult> GetAllApplicants()
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (UserId == null)
+                return Unauthorized("Unauthorized access");
+
+            if (!int.TryParse(UserId, out var id))
+                return Unauthorized("Unauthorized access");
+            var result = await servicesOfCompany.ViewAllApplicantsForCompany(id);
+            return result.statusCode switch
+            {
+                401 => Unauthorized(new { Message = result.message, Data = result.Item1 }),
+                404 => NotFound(new { Message = result.message, Data = result.Item1 }),
+                400 => BadRequest(new { Message = result.message, Data = result.Item1 }),
+                200 => Ok(new { Message = result.message, Data = result.Item1 }),
+                500 => StatusCode(StatusCodes.Status500InternalServerError,
+                       new { errorMessage = result.message, Data = result.Item1 }),
+                _ => StatusCode(StatusCodes.Status500InternalServerError,
+                      new { errorMessage = result.message, Data = result.Item1 })
+            };
+        }
+
+        [HttpGet("downloadCV/{applicantId}")]
+        public async Task<IActionResult> DownloadCV([FromRoute(Name ="id")] int applicantId)
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (UserId == null)
+                return Unauthorized("Unauthorized access");
+
+            if (!int.TryParse(UserId, out var id))
+                return Unauthorized("Unauthorized access");
+
+            var result = await servicesOfCompany.DownloadCV(id , applicantId);
+            return result.statuscode switch
+            {
+                401 => Unauthorized(result.message),
+                403 => StatusCode(403,
+                       new { errorMessage = result.message }),
+                404 => NotFound(result.message),
+                200 => File(result.Item1,result.contentType,result.fileName),
+                503 => StatusCode(StatusCodes.Status503ServiceUnavailable,
+                       new { errorMessage = result.message }),
+                504 => StatusCode(StatusCodes.Status504GatewayTimeout,
+                       new { errorMessage = result.message }),
+                500 => StatusCode(StatusCodes.Status500InternalServerError,
+                       new { errorMessage = result.message }),
+                _ => StatusCode(StatusCodes.Status500InternalServerError,
+                      new { errorMessage = result.message })
+            };
+        }
+       
+        [HttpPut("reject/{applicantId}/{internId}")]
+        public async Task<IActionResult> RejectApplicant(int applicantId, int internId)
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (UserId == null)
+                return Unauthorized("Unauthorized access");
+
+            if (!int.TryParse(UserId, out var id))
+                return Unauthorized("Unauthorized access");
+
+            var result = await servicesOfCompany.RejectApplicant(internId , id , applicantId);
+            return result.statuscode switch
+            {
+                401 => Unauthorized(result.message),
+                400 => BadRequest(result.message),
+                404 => NotFound(result.message),
+                200 => Ok( result.message ),
+                500 => StatusCode(StatusCodes.Status500InternalServerError,
+                       new { errorMessage = result.message }),
+                _ => StatusCode(StatusCodes.Status500InternalServerError,
+                      new { errorMessage = result.message })
+            };
+        }
+        
+        [HttpPut("accept/{applicantId}/{internId}")]
+        public async Task<IActionResult> AcceptApplicant(int applicantId, int internId)
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (UserId == null)
+                return Unauthorized("Unauthorized access");
+
+            if (!int.TryParse(UserId, out var id))
+                return Unauthorized("Unauthorized access");
+
+            var result = await servicesOfCompany.AcceptApplicant(internId, id, applicantId);
+            return result.statuscode switch
+            {
+                401 => Unauthorized(result.message),
+                400 => BadRequest(result.message),
+                404 => NotFound(result.message),
+                200 => Ok(result.message),
+                500 => StatusCode(StatusCodes.Status500InternalServerError,
+                       new { errorMessage = result.message }),
+                _ => StatusCode(StatusCodes.Status500InternalServerError,
+                      new { errorMessage = result.message })
+            };
+        }
+
+    }
+}

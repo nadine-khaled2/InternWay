@@ -1,0 +1,85 @@
+﻿using InternWay.DTOs;
+using InternWay.IServices;
+using InternWay.Models.mentor_schema;
+using InternWay.Models.PaymentSystem;
+using InternWay.Models.student_schema;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+
+namespace InternWay.Services.MentorServices
+{
+    public class ServicesOfMentor : IServicesOfMentor
+    {
+        private readonly InternShipWayDB internShipWay;
+
+        public ServicesOfMentor(InternShipWayDB internShipWay )
+        {
+            this.internShipWay = internShipWay;
+        }
+        public async Task CreateWallet(int MentorId)
+        {
+            if (MentorId == 0)
+                return;
+            var Wallet = new MentorWallet()
+            {
+                MentorId = MentorId,
+                CurrentBalance = 0,
+                PendingBalance = 0,
+            };
+            await internShipWay.mentorWallets.AddAsync( Wallet );
+            await internShipWay.SaveChangesAsync();
+        }
+        public bool IsValidTime(TimeOnly StartTime, TimeOnly EndTime, out string ErrorMessage)
+        {
+            if (StartTime >= EndTime)
+            {
+                ErrorMessage = "End time must be after start time";
+                return false;
+
+
+            }
+            ErrorMessage = string.Empty;
+            return true;
+
+        }
+
+        public async Task<string> JoinExperiences(List<Experience> experiences)
+        {
+            if (experiences == null || !experiences.Any())
+                return string.Empty;
+
+           return string.Join('\n', experiences.Select(  o => $"{o.title?.Trim()}-{o.companyName?.Trim()}"  ));
+        }
+        public async Task< List<Experience> > ExtractListOfExperience(int mentorId)
+        {
+            var ListOfExperiences = await internShipWay.Mentors
+                 .Include(e => e.Mentor_Experiences)
+                 .ThenInclude(e => e.Experience)
+                 .Where(e => e.Mentor_Id == mentorId)
+                 .SelectMany(e => e.Experiences)
+                 .Select(e => new Experience() { title = e.title, companyName = e.companyName })
+                 .ToListAsync();
+            
+            if(ListOfExperiences != null)
+            return ListOfExperiences;
+            return null;
+        }
+        public async Task addExperiencesOfMentor(int mentorId, List<int> ExperienceId)
+        {
+            List<Mentor_Experience> Relations = new();
+            foreach (var ExId in ExperienceId)
+            {
+                var relation = new Mentor_Experience() {mentor_id = mentorId , expertise_Id = ExId };
+                Relations.Add(relation);
+            }
+            if(Relations != null)
+            {
+              await internShipWay.Mentor_Experiences.AddRangeAsync(Relations);
+                await internShipWay.SaveChangesAsync();
+                
+            }
+        }
+
+      
+    }
+}

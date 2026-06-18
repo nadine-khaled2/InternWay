@@ -1,0 +1,42 @@
+﻿using InternWay.Models.student_schema;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace InternWay.Models.mentor_schema
+{
+    [Table("Mentorship_Sessions", Schema = "mentor") ]
+    public class Mentorship_Session
+
+    {
+        public enum Status_Session
+        {
+            Pending,
+            Confirmed,
+            Expired ,
+            Cancelled ,
+            InProgress,
+            Started,
+            Completed 
+        }
+      
+        public enum Topic 
+        {
+            CV_Resume_Review = 1,
+            Career_Guidance = 2,
+            Mock_Interview = 3,
+            Technical_Help = 4,
+            Portfolio_Review = 5
+        }
+        public int session_id { get; set; }
+        public int slot_id { get; set; }
+        public int student_id { get; set; }
+        public Topic topic { get; set; } 
+        public Status_Session status_session { get; set; }
+        public DateTime? StudentJoinedAt { get; set; }
+        public DateTime? MentorJoinedAt { get; set; }
+        public DateTime created_at { get; set; }
+        public Student student { get; set; }
+        public Mentor_Availability mentor_availability { get; set; }
+        public Review? review    { get; set; }
+    }
+}

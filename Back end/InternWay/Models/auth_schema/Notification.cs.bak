@@ -1,0 +1,22 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace InternWay.Models.auth_schema
+{
+    [Table("Notifications", Schema = "auth")]
+    public class Notification
+    {
+
+        public int Notification_Id { get; set; }
+
+        public int User_Id { get; set; }
+
+        [Required]
+        public string Message { get; set; }
+        public DateTime Create_at { get; set; }
+        public bool Is_Read { get; set; }
+
+        public User user { get; set; }
+
+    }
+}

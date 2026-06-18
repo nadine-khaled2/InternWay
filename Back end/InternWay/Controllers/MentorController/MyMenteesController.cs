@@ -1,0 +1,193 @@
+using InternWay.DTOs;
+using InternWay.DTOs.MentorModels;
+using InternWay.Models.mentor_schema;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+
+using InternWay.IServices;
+
+namespace InternWay.Controllers.MentorController
+{
+    [Route("Mentor/[controller]")]
+    [ApiController]
+    [Authorize(Roles = "mentor")]
+    public class MyMenteesController : ControllerBase
+    {
+        private readonly InternShipWayDB _context;
+        private readonly INotificationService _notificationService;
+        public MyMenteesController(InternShipWayDB context, INotificationService notificationService)
+        {
+            _context = context;
+            _notificationService = notificationService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllMentees()
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (UserId == null)
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            if (!int.TryParse(UserId, out var id))
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            var mentor = await _context.Mentors.FirstOrDefaultAsync(m => m.user_id == id);
+            if (mentor == null) return NotFound(new { message = "Mentor not found" });
+            int mentorId = mentor.Mentor_Id;
+
+            var today = DateOnly.FromDateTime(DateTime.Now);
+
+            var mentees = await _context.mentorship_Sessions
+                .Where(s => s.mentor_availability.mentor_id == mentorId)
+                .Include(s => s.student)
+                    .ThenInclude(st => st.User)
+                .Include(s => s.mentor_availability)
+                .GroupBy(s => new {
+                    s.student.Student_Id,
+                    s.student.User.Full_Name,
+                    s.student.User.Email,
+                    s.student.User.PhoneNumber,
+                    s.student.University,
+                    s.student.Major
+                })
+                .Select(g => new MenteeListDto
+                {
+                    StudentId = g.Key.Student_Id,
+                    FullName = g.Key.Full_Name,
+                    Email = g.Key.Email,
+                    Phone = g.Key.PhoneNumber ?? "",
+                    University = g.Key.University,
+                    Major = g.Key.Major,
+                    TotalSessions = g.Count(s => s.status_session == Mentorship_Session.Status_Session.Completed || s.status_session == Mentorship_Session.Status_Session.Confirmed || s.status_session == Mentorship_Session.Status_Session.Pending),
+                    NextSession = g.Where(s => s.mentor_availability.date >= today && (s.status_session == Mentorship_Session.Status_Session.Confirmed || s.status_session == Mentorship_Session.Status_Session.Pending))
+                                   .OrderBy(s => s.mentor_availability.date)
+                                   .ThenBy(s => s.mentor_availability.start_time)
+                                   .Select(s => s.mentor_availability.date.ToString("MMM d") + ", " + s.mentor_availability.start_time.ToString("hh:mm tt"))
+                                   .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            return Ok(mentees);
+        }
+
+        [HttpGet("viewprofile/{studentId}")]
+        public async Task<IActionResult> GetProfile(int studentId)
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (UserId == null || !int.TryParse(UserId, out var userId)) 
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            var mentor = await _context.Mentors.FirstOrDefaultAsync(m => m.user_id == userId);
+            if (mentor == null) 
+                return NotFound(new { message = "Mentor not found" });
+
+            // Check if this student is actually a mentee of this mentor
+            var isMentee = await _context.mentorship_Sessions
+                .AnyAsync(s => s.student_id == studentId && s.mentor_availability.mentor_id == mentor.Mentor_Id);
+
+            if (!isMentee)
+                return StatusCode(403, new { message = "You are not allowed to access this student's profile because they are not your mentee." });
+
+            var student = await _context.Students
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.Student_Id == studentId);
+
+            if (student == null) return NotFound(new { message = "Student not found" });
+
+            var result = new MenteeProfileDto
+            {
+                StudentId = student.Student_Id,
+                FullName = student.User.Full_Name,
+                Email = student.User.Email,
+                Phone = student.User.PhoneNumber ?? "",
+                University = student.University,
+                College = student.College,
+                Major = student.Major,
+                GraduationYear = student.Graduation_Year,
+                Location = student.location,
+                //  CvUrl = student.CvURL ==============================================
+            };
+
+            return Ok(result);
+        }
+
+        [HttpPost("scheduleSession")]
+        public async Task<IActionResult> ScheduleSession([FromBody] InternalScheduleRequest request)
+        {
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (UserId == null)
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            if (!int.TryParse(UserId, out var id))
+                return Unauthorized(new { message = "Unauthorized access" });
+
+            var mentor = await _context.Mentors.FirstOrDefaultAsync(m => m.user_id == id);
+            if (mentor == null) return NotFound(new { message = "Mentor not found" });
+            int mentorId = mentor.Mentor_Id;
+
+            // 1. Check if slot exists and belongs to this mentor and is not booked
+            var slot = await _context.Mentor_Availabilities
+                .FirstOrDefaultAsync(s => s.Slot_Id == request.SlotId && s.mentor_id == mentorId);
+
+            if (slot == null)
+            {
+                return NotFound(new { message = "Slot not found or belongs to another mentor." });
+            }
+
+            if (slot.is_booked)
+            {
+                return BadRequest(new { message = "This slot is already booked." });
+            }
+
+            // 1.5 Check if student exists to prevent Foreign Key exception
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.Student_Id == request.StudentId);
+            if (student == null)
+            {
+                return NotFound(new { message = $"Student with ID {request.StudentId} does not exist in the database." });
+            }
+
+            // 2. Create the session
+            var newSession = new Mentorship_Session
+            {
+                slot_id = request.SlotId,
+                student_id = request.StudentId,
+                status_session = Mentorship_Session.Status_Session.Confirmed, // Mentor is creating it, so it's pre-approved
+                created_at = DateTime.Now,
+                topic = (Mentorship_Session.Topic)(request.TopicId > 0 && request.TopicId <= 5 ? request.TopicId : 1) // Default to CV Review if invalid
+            };
+
+            // 3. Mark slot as booked
+            slot.is_booked = true;
+
+            _context.mentorship_Sessions.Add(newSession);
+            await _context.SaveChangesAsync();
+
+            var mentorUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            string mentorName = mentorUser?.Full_Name ?? "Your mentor";
+            string topicName = newSession.topic.ToString().Replace("_", " ");
+            string message = $"{mentorName} has scheduled a new {topicName} session with you.";
+
+            // 4. Send Real-Time Notification to the Student
+            await _notificationService.CreateAndSendNotificationAsync(
+                userId: student.user_id, // Ensure we use the auth user_id, not Student_Id
+                title: "Session Scheduled",
+                message: message,
+                type: "StudentSession",
+                relatedEntityId: newSession.session_id
+            );
+
+            return Ok(new { message = "Session scheduled successfully", sessionId = newSession.session_id });
+        }
+    }
+
+    public class InternalScheduleRequest
+    {
+        public int StudentId { get; set; }
+        public int SlotId { get; set; }
+        public int TopicId { get; set; }
+    }
+}

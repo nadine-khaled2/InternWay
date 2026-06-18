@@ -1,0 +1,12 @@
+﻿using System.Text.Json.Serialization;
+
+namespace InternWay.DTOs.AIModels
+{
+    public class MentorshipsMatchResponse
+    {
+        [JsonPropertyName("student_id")]
+        public string StudentId { get; set; }
+        [JsonPropertyName("top_mentors")]
+        public List<MatchScoreDtoForMentorships> MoreMatchMentors { get; set; }
+    }
+}

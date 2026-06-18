@@ -1,0 +1,417 @@
+﻿using InternWay.DTOs.StudentModels;
+using InternWay.Models.auth_schema;
+using InternWay.Models.mentor_schema;
+using InternWay.Models.PaymentSystem;
+using InternWay.Models.student_schema;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Options;
+using System.Numerics;
+using System.Text.Json;
+using static InternWay.Models.company_schema.Internship;
+using static InternWay.Models.mentor_schema.Mentorship_Session;
+
+namespace InternWay.Services.PaymentServices
+{
+    public class PaymentSystem
+    {
+        private readonly HttpClient _httpClient;
+        private readonly InternShipWayDB internShipWayDB;
+        private readonly PaymobSettings _settings;
+
+        public PaymentSystem(
+            HttpClient httpClient,
+            IOptions<PaymobSettings> settings,
+            InternShipWayDB internShipWayDB)
+        {
+            _httpClient = httpClient;
+            this.internShipWayDB = internShipWayDB;
+            _settings = settings.Value;
+        }
+
+        public async Task<string> GetAuthToken()
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "https://accept.paymob.com/api/auth/tokens",
+                new
+                {
+                    api_key = _settings.ApiKey
+                });
+
+            var json = await response.Content.ReadFromJsonAsync<JsonElement>();
+
+            return json.GetProperty("token").GetString();
+        }
+        private async Task<int> CreateOrder( string authToken, decimal amount,int sessionId)
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "https://accept.paymob.com/api/ecommerce/orders",
+                new
+                {
+                    auth_token = authToken,
+                    delivery_needed = false,
+                    amount_cents = (int)(amount * 100),
+                    currency = "EGP",
+                    merchant_order_id = sessionId,
+                    items = new List<object>()
+                });
+
+            var json = await response.Content.ReadFromJsonAsync<JsonElement>();
+
+            return json.GetProperty("id").GetInt32();
+        }
+        private async Task<string> GeneratePaymentKey(string authToken,int orderId,decimal amount , Student student)
+        {
+
+            var response = await _httpClient.PostAsJsonAsync(
+                "https://accept.paymob.com/api/acceptance/payment_keys",
+                new
+                {
+                    auth_token = authToken,
+                    amount_cents = (int)(amount * 100),
+                    expiration = 3600,
+                    order_id = orderId,
+
+                    billing_data = new
+                    {
+                        apartment = "NA",
+                        email = student.User.Email,
+                        floor = "NA",
+                        first_name = student.User.Full_Name?.Split(' ')[0] ?? "User",
+                        street = "NA",
+                        building = "NA",
+                        phone_number = student.User.PhoneNumber,
+                        shipping_method = "NA",
+                        postal_code = "NA",
+                        city = "Cairo",
+                        country = "EG",
+                        last_name = student.User.Full_Name?.Split(' ')[1] ?? "User",
+                        state = "Cairo"
+                    },
+
+                    currency = "EGP",
+                    integration_id = _settings.IntegrationId
+                });
+
+            var json = await response.Content.ReadFromJsonAsync<JsonElement>();
+           
+            if (!json.TryGetProperty("token", out var token))
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception(error);
+            }
+
+
+            return token.GetString();
+        }
+        private string GenerateIframeUrl(string paymentToken)
+        {
+            return
+                $"https://accept.paymob.com/api/acceptance/iframes/{_settings.IframeId}?payment_token={paymentToken}";
+        }
+        public async Task<PaymentResponse> PaySession(int sessionId, int UserId )
+        {
+            using var transaction =await internShipWayDB.Database.BeginTransactionAsync();
+            
+            try
+            {
+                var student = await internShipWayDB.Students
+                .Include(e => e.User)
+                .Include(e=>e.mentorship_Sessions)
+                .ThenInclude(e=>e.mentor_availability)
+                .FirstOrDefaultAsync(e => e.user_id == UserId);
+
+                if (student == null || student.User == null)
+                {
+                    await transaction.RollbackAsync();
+                    return new PaymentResponse
+                    {
+                        Success = false,
+                        Message = "Student not found ."
+                    };
+                }
+
+                var session = student.mentorship_Sessions
+                    .FirstOrDefault(e=>e.session_id == sessionId);
+
+                if (session == null)
+                {
+                    await transaction.RollbackAsync();
+                    return new PaymentResponse
+                    {
+                        Success = false,
+                        Message = "Session not found ."
+                    };
+                }
+                var slot = session.mentor_availability;
+
+                if (slot == null)
+                {
+                    await transaction.RollbackAsync();
+                    return new PaymentResponse
+                    {
+                        Success = false,
+                        Message = "Associated time slot is not available."
+                    };
+                }
+
+                if (slot.paid_status == Baid_Status.Unpaid)
+                {
+                    await transaction.RollbackAsync();
+                    return new PaymentResponse
+                    {
+                        Success = false,
+                        Message = "Payment is not allowed for this session."
+                    };
+                }
+
+                if (session.status_session == Status_Session.Confirmed)
+                {
+                    await transaction.RollbackAsync();
+                    return new PaymentResponse
+                    {
+                        Success = false,
+                        Message = "Payment already completed for this session."
+                    };
+                }
+
+                if (session.status_session != Status_Session.Pending)
+                {
+                    await transaction.RollbackAsync();
+                    return new PaymentResponse
+                    {
+                        Success = false,
+                        Message = "This session is not available for payment at the moment."
+                    };
+                }
+
+
+                var authToken = await GetAuthToken();
+
+                var orderId = await CreateOrder(authToken,slot.priceSlot , sessionId);
+
+                var paymentKey = await GeneratePaymentKey(authToken, orderId, slot.priceSlot, student);
+
+                if (string.IsNullOrEmpty(paymentKey))
+                {
+                    await transaction.RollbackAsync();
+                    return new PaymentResponse
+                    {
+                        Success = false,
+                        Message = "Failed to generate payment key. Please try again."
+                    };
+                }
+               
+                await transaction.CommitAsync();
+                return new PaymentResponse
+                { 
+                    Success = true,
+                    Url = GenerateIframeUrl(paymentKey),
+                    Message = "Payment link generated successfully"
+                };
+            }
+            catch (Exception )
+            {
+                await transaction.RollbackAsync();
+                return new PaymentResponse
+                {
+                    Success = false,
+                    Message = "Something went wrong. Please try again later."
+                };
+            }
+        }
+        public  async Task<(int statusCode, SessionActionResponseDto)> ApplyCancellationPenaltyAsync(int sessionId, int UserId)
+        {
+            using var transaction = await internShipWayDB.Database.BeginTransactionAsync();
+            try
+            {
+
+                var student = await internShipWayDB.Students
+                    .Include(e => e.Session_Limitation)
+                    .Include(e => e.mentorship_Sessions)
+                    .ThenInclude(e => e.mentor_availability)
+                    .ThenInclude(e => e.Mentor)
+                    .ThenInclude(m=>m.Wallet)
+                    .FirstOrDefaultAsync(e => e.user_id == UserId);
+
+                if (student == null || student.Session_Limitation == null)
+                {
+                    await transaction.RollbackAsync();
+                    return (401, new SessionActionResponseDto()
+                    {
+                        Decision = ActionDecision.Block,
+                        Message = "User not authenticated"
+                    });
+                }
+
+
+                var session = student.mentorship_Sessions
+                    .Where(e => e.session_id == sessionId)
+                    .FirstOrDefault();
+                if (session == null)
+                {
+                    await transaction.RollbackAsync();
+                    return (403, new SessionActionResponseDto()
+                    {
+                        Decision = ActionDecision.Block,
+                        Message = "You are not allowed to cancel this session."
+                    });
+                }
+
+                var slot = session.mentor_availability;
+                if (slot == null)
+                {
+                    await transaction.RollbackAsync();
+                    return (400, new SessionActionResponseDto()
+                    {
+                        Decision = ActionDecision.Block,
+                        Message = "This session has no associated slot."
+                    });
+                }
+
+                var mentor = slot.Mentor;
+                if (mentor == null)
+                {
+                    await transaction.RollbackAsync();
+                    return (400, new SessionActionResponseDto()
+                    {
+                        Decision = ActionDecision.Block,
+                        Message = "This session is not linked to a mentor."
+                    });
+                }
+               
+                if (mentor.Wallet == null)
+                {
+                    await transaction.RollbackAsync();
+                    return (400, new SessionActionResponseDto()
+                    {
+                        Decision = ActionDecision.Block,
+                        Message = @"We couldn't process your request at the moment because the mentor's wallet is not set up.
+                                    Please try again later or contact support."
+
+                    });
+                }
+                var Transaction = await internShipWayDB.Transactions
+                    .FirstOrDefaultAsync(e =>e.SessionId == sessionId 
+                    && e.WalletId == mentor.Wallet.Id && e.TransactionId !=0);
+
+                var PenaltyAmount = 0.50m * slot.priceSlot;
+                
+                await AddTransaction(Transaction,sessionId,  mentor.Wallet, slot.priceSlot);
+
+                student.Session_Limitation.CancelCountTotal += 1;
+                student.Session_Limitation.LastHourCancellationCount += 1;
+                slot.is_booked = false;
+                session.status_session = Status_Session.Cancelled;
+
+                await internShipWayDB.SaveChangesAsync();
+                await transaction.CommitAsync();
+             
+                return (200, new SessionActionResponseDto()
+                {
+                    Decision = ActionDecision.Allow,
+                    Message = "Session cancelled successfully.",
+                    PenaltyAmount = PenaltyAmount
+                });
+            }
+            catch (Exception ex)
+            {
+
+                await transaction.RollbackAsync();
+                return (500, new SessionActionResponseDto()
+                {
+                    Decision = ActionDecision.Block,
+                    Message = "Something went wrong while processing your request. Please try again.",
+                });
+            }
+
+        }
+        private async Task AddTransaction(Transaction? Transaction , int SessionId , MentorWallet wallet , decimal amount)
+        {
+            if (amount <= 0) 
+                return;
+            if (wallet == null || Transaction == null )
+                return;
+
+              
+            decimal mentorPart = amount * 0.50m;
+              
+            decimal refundPart = amount * 0.50m;
+              
+               
+            wallet.PendingBalance -= amount * 0.70m;
+
+               
+            wallet.CurrentBalance += mentorPart;
+
+               
+            var authToken = await GetAuthToken();
+
+              
+            await RefundPayment(authToken, Transaction.TransactionId, refundPart);
+           
+            await UpdatePaymentForRefund(SessionId, "partial");
+           
+            var NewTransaction = new Transaction()
+            {
+                WalletId = wallet.Id,
+                Amount = mentorPart,
+                Type = TransactionType.Refund,
+                TransactionId = 0,
+                SessionId = SessionId
+            };
+           
+            await internShipWayDB.Transactions.AddAsync(NewTransaction);
+           
+        }
+        public async Task RefundPayment(string authToken,long transactionId,decimal amount)
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "https://accept.paymob.com/api/acceptance/void_refund/refund",
+                new
+                {
+                    auth_token = authToken,
+                    transaction_id = transactionId,
+                    amount_cents = (int)(amount * 100)
+                });
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Refund failed");
+            }
+        }
+        public async Task UpdatePaymentForRefund(int SessionId, string TypeRefund)
+        {
+            var typeRefund = TypeRefund.ToLower().Trim();
+            try
+            {
+                var payment = await internShipWayDB.Payments
+                    .Where(e => e.SessionId == SessionId)
+                    .FirstOrDefaultAsync();
+
+                if (payment == null)
+                    return;
+
+                if (typeRefund.Equals("full"))
+                {
+                    payment.Status = PaymentStatus.Refunded;
+                    payment.RefundStatus = RefundStatus.Full;
+                    payment.RefundedAmount = payment.Amount;
+                }
+                else
+                {
+                    payment.Status = PaymentStatus.Refunded;
+                    payment.RefundStatus = RefundStatus.Partial;
+                    payment.RefundedAmount = 0.5m * payment.Amount;
+                }
+
+                await internShipWayDB.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            { 
+                throw new Exception("We couldn’t complete your request.Please try again.");
+            }
+        }
+    }
+}

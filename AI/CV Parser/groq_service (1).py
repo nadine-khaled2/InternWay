@@ -7,7 +7,7 @@ import os
 import os
 from dotenv import load_dotenv
 
-load_dotenv()   # ← ده مهم عشان يقرأ ملف .env
+load_dotenv()    
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 def validate_and_format_with_groq(extracted_data):

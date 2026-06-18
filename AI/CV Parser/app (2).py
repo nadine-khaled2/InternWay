@@ -7,7 +7,7 @@ from tempfile import NamedTemporaryFile
 from parser_core import parse_cv
 from groq_service import validate_and_format_with_groq
 
-print("تم استيراد كل المكتبات بنجاح")
+ 
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -18,7 +18,7 @@ def parse_resume_api():
         return jsonify({"error": "No file part in the request"}), 400
 
     file = request.files['file']
-    user_id = request.form.get('user_id')   # ← user_id عام (للطالب والمنتور)
+    user_id = request.form.get('user_id')   
 
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
@@ -34,7 +34,7 @@ def parse_resume_api():
             final_clean_json_str = validate_and_format_with_groq(raw_result)
             final_clean_json = json.loads(final_clean_json_str)
 
-            # إضافة user_id لو موجود (اختياري)
+             
             if user_id:
                 final_clean_json["user_id"] = user_id
             else:
@@ -52,10 +52,10 @@ def parse_resume_api():
 
 
 if __name__ == "__main__":
-    print("جاري تشغيل السيرفر...")
+     
     try:
         app.run(host="0.0.0.0", port=5000, debug=True)
     except Exception as e:
-        print("خطأ في تشغيل السيرفر:")
+         
         import traceback
         traceback.print_exc()
